@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8">
+        <title>PENDLAREN</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
+        <header class="site-header">
+            <h1 class="logo-title">PENDLAREN</h1>
+        </header>
 
+        <main class="site-main"> 
+            <div class="main-layout">
+                <section class="form-section">
+                    <form class="trip-form">
+                        <div class="form-group">
+                            <label for="from-stop">Från:</label>
+                            <select id="from-stop" name="from-stop">
+                                <option value=""> Välj hållplats</option>
+                                <option value="malmo C">Malmö C</option>
+                                <option value="triangeln">Triangeln</option>
+                                <option value="ubatshallen">Ubåtshallen</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="to-stop">Till:</label>
+                            <select id="to-stop" name="to-stop">
+                                <option value=""> Välj hållplats</option>
+                                <option value="malmo C">Malmö C</option>
+                                <option value="triangeln">Triangeln</option>
+                                <option value="ubatshallen">Ubåtshallen</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn-search">SÖK</button>
+                    </form>
+                </section>
+
+                <section class="playlist-section">
+                    <div class="playlist-box">
+                        <p class="playlist-placeholder">
+                            Din tidsanpassade spellista visas här.
+                        </p>
+                    </div>
+
+                    <!-- Tillfällig länk -->
+                    <a class="btn-play-now" href="http://www.demolatar.se" target="_blank"> 
+                        SPELA NU
+                    </a>
+                </section>
+
+                <aside class="playlist-aside" aria-label="Sparade spellistor">
+                    <h2 class="aside-title">Spellistor</h2>
+                    <ul class="playlist-list">
+                        <li class="playlist-item playlist-item--empty">
+                            Inga sparade spellistor
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <p>
+                    Alla låtar är tagna från 
+                    <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+                </p>
+                <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
+            </div>
+        </footer>
 </body>
 </html>

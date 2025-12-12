@@ -1,0 +1,194 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Färgerna justeras här via root */
+:root {
+    --bg-main: #c98833;
+    --bg-light: #dfaa5b;
+    --input-bg: #f4e9d7;
+    --text-dark: #4a2e15;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: #ffffff;
+    margin: 0;
+}
+
+/* Header */
+
+.site-header {
+    background-color: var(--bg-main);
+    padding: 2rem 3rem 1rem;
+}
+
+.logo-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+}
+
+/* Main */
+
+.site-main {
+    padding: 2rem 3rem 5rem;
+}
+
+.main-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1.2fr 0.8fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Form + spellista (vänster) */
+
+.search-section {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 2rem;
+}
+
+.trip-form {
+    max-width: 450px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 0.25rem;
+    border: none;
+    background-color: var(--input-bg);
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.btn-search {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.9rem 2.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    background-color: var(--bg-light);
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.playlist-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+.playlist-box {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: rgba(244, 233, 215, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.playlist-placeholder {
+    color: #ffffff;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.btn-play-now {
+    display: block;
+    padding: 0.9rem 2.5rem;
+    border-radius: 0.75rem;
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* Aside: sparade spellistor (höger) */
+
+.playlist-aside {
+    background-color: #ffffff;
+    color: var(--text-dark);
+    padding: 1.5rem 1.5rem 2rem;
+    text-align: right;
+    align-self: stretch;
+    height: 100%;
+}
+
+.playlist-aside .aside-title,
+.playlist-aside .playlist-item {
+    color: var (--text-dark);
+}
+
+.aside-title {
+    font-size: 1.8rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.playlist-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.playlist-item {
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+.playlist-item--empty {
+    opacity: 0.8;
+}
+
+/* Footer */
+
+.site-footer {
+    background-color: #ffffff;
+    color: var(--text-dark);
+    padding: 1rem 3rem 2rem;
+    border-top: 2px solid var(--bg-main);
+    font-size: 0.95rem;
+}
+
+.footer-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.site-footer a {
+    color: var(--bg-main);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+.footer-logo {
+    height: 40px;
+}
