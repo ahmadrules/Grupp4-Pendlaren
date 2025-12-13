@@ -139,7 +139,7 @@ body {
 
 .playlist-aside .aside-title,
 .playlist-aside .playlist-item {
-    color: var (--text-dark);
+    color: var(--text-dark);
 }
 
 .aside-title {
