@@ -4,6 +4,10 @@
         <meta charset="UTF-8">
         <title>PENDLAREN</title>
         <link rel="stylesheet" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="script.js"></script>
     </head>
 <body>
@@ -17,7 +21,7 @@
                     <form class="trip-form">
                         <div class="form-group">
                             <label for="from-stop">Från:</label>
-                            <select id="from-stop" name="from-stop">
+                            <select class="js-example-basic-single" id="from-stop" name="from-stop">
                                 <option value=""> Välj hållplats</option>
                                 <option value="malmo C">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
@@ -27,7 +31,7 @@
 
                         <div class="form-group">
                             <label for="to-stop">Till:</label>
-                            <select id="to-stop" name="to-stop">
+                            <select class="js-example-basic-single" id="to-stop" name="to-stop">
                                 <option value=""> Välj hållplats</option>
                                 <option value="malmo C">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
@@ -73,4 +77,8 @@
             </div>
         </footer>
 </body>
+
+<script>$(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});</script>
 </html>

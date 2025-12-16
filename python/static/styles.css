@@ -15,7 +15,7 @@
 
 body {
     background-color: var(--bg-main);
-    color: #ffffff;
+    // DETTA GÖR SÖKOBJEKTERNAS TEXT VIT OCH OSYNLIG color: #ffffff;
     margin: 0;
 }
 
