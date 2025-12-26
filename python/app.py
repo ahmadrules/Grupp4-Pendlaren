@@ -17,4 +17,4 @@ async def root():
 @app.get("/?from-stop={fromStop}&to-stop={toStop}")
 async def getTrip(fromStop: str, toStop: str):
     print(fromStop, toStop)
-    return trafikLab.findTrip(fromStop, toStop)
+    return Response(trafikLab.findTrip(fromStop, toStop), media_type="application/json")

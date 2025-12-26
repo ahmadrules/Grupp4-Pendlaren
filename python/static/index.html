@@ -9,6 +9,28 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="script.js"></script>
+
+        <script>
+            function getTrip() {
+                return function () {
+                    let fromStop = $('#from-stop').val();
+                    let toStop = $('#to-stop').val();
+
+                    $.ajax({
+                        method: "GET",
+                        url: 'http://localhost:8000/?from-stop="' + fromStop + '"&to-stop="' + toStop,
+                        headers: {"Accept": "application/json"}
+                    })
+                }
+            }
+
+
+            $(document).ready(function() {
+                $('.js-example-basic-single').select2();
+                $('#').click(getTrip());
+            });
+        </script>
+
     </head>
 <body>
         <header class="site-header">
@@ -23,7 +45,7 @@
                             <label for="from-stop">Från:</label>
                             <select class="js-example-basic-single" id="from-stop" name="from-stop">
                                 <option value=""> Välj hållplats</option>
-                                <option value="malmo C">Malmö C</option>
+                                <option value="malmoC">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
                                 <option value="ubatshallen">Ubåtshallen</option>
                             </select>
@@ -33,13 +55,12 @@
                             <label for="to-stop">Till:</label>
                             <select class="js-example-basic-single" id="to-stop" name="to-stop">
                                 <option value=""> Välj hållplats</option>
-                                <option value="malmo C">Malmö C</option>
+                                <option value="malmoC">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
                                 <option value="ubatshallen">Ubåtshallen</option>
                             </select>
                         </div>
-
-                        <button type="submit" class="btn-search">SÖK</button>
+                        <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
                     </form>
                 </section>
 
@@ -77,8 +98,4 @@
             </div>
         </footer>
 </body>
-
-<script>$(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});</script>
 </html>

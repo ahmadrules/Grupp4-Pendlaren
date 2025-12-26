@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.6" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Python 3.10 (Grupp4-Pendlaren) (2)" project-jdk-type="Python SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Python 3.13 (Grupp4-Pendlaren)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

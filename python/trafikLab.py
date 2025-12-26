@@ -22,7 +22,6 @@ def findTrip(stop1, stop2):
         data = json.loads(response.content)
         return readTrip(data)
 
-
 def readTrip(jsonData):
     legs = jsonData['Trip'][0]['LegList']['Leg']
     legsOut = []
