@@ -1,5 +1,7 @@
-#demolatar_api.py
+# demolatar_api.py
 import requests
+import json
+from datetime import datetime
 
 BASE_URL = "https://www.demolatar.se/api"
 
@@ -31,7 +33,7 @@ class DemolatarAPI:
         return r.json()
 
     # --------------------------------------------
-    #hämta låtar efter genre
+    # hämta låtar efter genre
     # --------------------------------------------
     def get_tracks_by_genre(self, genre, limit=20):
         """
@@ -40,14 +42,14 @@ class DemolatarAPI:
         """
         results = self.search(genre)
 
-        #api kan returnera en lista eller ett objekt
+        # api kan returnera en lista eller ett objekt
         if not isinstance(results, list):
             return []
 
-        #begränsa antalet låtar
+        # begränsa antalet låtar
         return results[:limit]
 
-    #spellista baserat på restid + genre
+    # spellista baserat på restid + genre
     def get_playlist_for_duration_and_genre(self, minutes_left, genre, avg_length=3.5):
         """
         Skapar en genrebaserad spellista anpassad efter restiden.
@@ -55,11 +57,31 @@ class DemolatarAPI:
         if minutes_left <= 0:
             return []
 
-        #hur många låtar behövs? (ungefär)
+        # hur många låtar behövs? (ungefär)
         count = max(1, int(minutes_left / avg_length))
         count = min(count, 50)  # API begränsning
 
-        #hämta låtar i vald genre
+        # hämta låtar i vald genre
         genre_tracks = self.get_tracks_by_genre(genre, limit=count)
 
         return genre_tracks
+
+    # --------------------------------------------
+    # Spara spellista till JSON-fil
+    # --------------------------------------------
+    def save_playlist_to_json(self, playlist, filename="playlist.json", genre=None, trip_info=None):
+        """
+        Sparar spellista till en JSON-fil.
+        playlist: lista av låtar
+        genre: vilken genre spellistan är
+        trip_info: valfri dict med info om resa (t.ex. från/till/departure/arrival)
+        """
+        data = {
+            "created": datetime.now().isoformat(),
+            "trip": trip_info or {},
+            "genre": genre,
+            "playlist": playlist
+        }
+
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
