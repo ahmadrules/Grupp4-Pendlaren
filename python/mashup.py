@@ -1,10 +1,13 @@
+from flask import Flask, request, make_response, jsonify
 import asyncio
 import json
-from datetime import datetime
 import jsonpickle
+from datetime import datetime
 
 from demolatar_api import DemolatarAPI
-from trafiklab import fetchStopId, findTrip  # importera dina async-funktioner
+from trafiklab import fetchStopId, findTrip  # dina async-funktioner
+
+app = Flask(__name__)
 
 # Om du vill räkna minuter från HH:MM:SS
 def time_to_minutes(fromTime, toTime):
@@ -24,7 +27,7 @@ async def create_playlist_for_trip(start, destination, genre):
     demolatar = DemolatarAPI()
     playlist = demolatar.get_playlist_for_duration_and_genre(minutes_left, genre)
 
-    # 4. Spara spellista till JSON
+    # Skapa trip-info
     trip_info = {
         "from": trip.fromStation,
         "to": trip.toStation,
@@ -32,7 +35,6 @@ async def create_playlist_for_trip(start, destination, genre):
         "arrival": trip.toTime,
         "travel_minutes": minutes_left
     }
-    demolatar.save_playlist_to_json(playlist, filename="trip_playlist.json", genre=genre, trip_info=trip_info)
 
     return {
         "trip_info": trip_info,
@@ -40,11 +42,22 @@ async def create_playlist_for_trip(start, destination, genre):
         "playlist": playlist
     }
 
-# Kör test
-if __name__ == "__main__":
-    start_station = "Lund C"
-    end_station = "Malmö C"
-    genre = "rock"
+# Flask-route som sätter spellistan i cookie
+@app.route("/trip_playlist")
+def trip_playlist():
+    start = request.args.get("start", "Lund C")
+    destination = request.args.get("destination", "Malmö C")
+    genre = request.args.get("genre", "rock")
 
-    result = asyncio.run(create_playlist_for_trip(start_station, end_station, genre))
-    print(json.dumps(result, indent=2, ensure_ascii=False))
+    # Kör async-funktionen
+    result = asyncio.run(create_playlist_for_trip(start, destination, genre))
+
+    # Sätt spellistan i cookie
+    playlist_json = json.dumps(result["playlist"])
+    resp = make_response(jsonify(result))
+    resp.set_cookie("playlist", playlist_json, max_age=3600, httponly=True)  # 1 timme
+
+    return resp
+
+if __name__ == "__main__":
+    app.run(debug=True)
