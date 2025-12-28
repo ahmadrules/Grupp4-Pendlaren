@@ -1,5 +1,7 @@
 import json
 from datetime import datetime
+from itertools import product
+
 from humanfriendly import format_timespan
 import jsonpickle
 import requests
@@ -26,6 +28,7 @@ async def findTrip(stop1, stop2):
                                 + resAPI)
 
         data = json.loads(response.content)
+        #print(data)
         return readTrip(data)
 
 def readTrip(jsonData):
@@ -39,7 +42,11 @@ def readTrip(jsonData):
         toTime = leg['Destination']['time']
 
         totalTime = calculateTime(fromTime, toTime)
-        leg = Leg(fromStation, fromTime, toStation, toTime, totalTime)
+
+        modeOfTravel = readModeOfTravel(leg)
+        print(modeOfTravel)
+
+        leg = Leg(fromStation, fromTime, toStation, toTime, totalTime, modeOfTravel[0], modeOfTravel[1])
         legsOut.append(leg)
 
     fromStation = jsonData['Trip'][0]['Origin']['name']
@@ -59,3 +66,27 @@ def calculateTime(fromTime, toTime):
     difference = tDate - fDate
     differenceStr = format_timespan(difference.total_seconds())
     return differenceStr
+
+def readModeOfTravel(jsonData):
+    product = jsonData['Product'][0]['name']
+
+    if product is None:
+        product = jsonData['Notes']['Note'][0]['value']
+
+    if product == 'Promenad':
+        return ['Promenad', '0']
+
+    if product.find('Länstrafik - Buss') != -1:
+        line = int(product.replace('Länstrafik - Buss ', ''))
+
+        if line < 100:
+            return ['Stadsbuss', line]
+        else:
+            return ['Regionbuss', line]
+
+    if product.find("Regional") != -1:
+        line = int(product.replace('Regional Tåg ', ''))
+        return ['Öresundståg', line]
+    else:
+        line = int(product.replace('Länstrafik - Tåg ', ''))
+        return ['Pågatåg', line]
