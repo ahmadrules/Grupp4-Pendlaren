@@ -1,24 +1,30 @@
 import json
-from os import getenv
-
+from datetime import datetime
+from humanfriendly import format_timespan
+import jsonpickle
 import requests
+from Leg import Leg
+from Trip import Trip
 
-resAPI = getenv("API_KEY")
+file = open("API_KEY.txt")
+resAPI = file.read()
 
-def fetchStopId(name):
-    response = requests.get("https://api.resrobot.se/v2.1/location.name?input=" + str(name) + "&maxNo=1&format=json&accessId=" + str(resAPI))
+async def fetchStopId(name):
+    link = "https://api.resrobot.se/v2.1/location.name?input=" + str(name) + "&maxNo=1&format=json&accessId=" + str(resAPI)
+    response = requests.get(link)
     data = json.loads(response.content)
     return data['stopLocationOrCoordLocation'][0]['StopLocation']['extId']
 
-def findTrip(stop1, stop2):
-    stopId1 = fetchStopId(stop1)
-    stopId2 = fetchStopId(stop2)
+async def findTrip(stop1, stop2):
+    stopId1 = await fetchStopId(stop1)
+    stopId2 = await fetchStopId(stop2)
     if stopId1 != -1 and stopId2 != -1:
         response = requests.get("https://api.resrobot.se/v2.1/trip?format=json&originId="
                                 + str(stopId1) + "&destId="
                                 + str(stopId2) +
                                 "&numF=1&format=json&passlist=0&showPassingPoints=true&accessId="
-                                + str(resAPI))
+                                + resAPI)
+
         data = json.loads(response.content)
         return readTrip(data)
 
@@ -27,17 +33,29 @@ def readTrip(jsonData):
     legsOut = []
 
     for leg in legs:
-        currentLeg = {
-            "fromStation": leg['Origin']['name'],
-            "fromTime": leg['Origin']['time'],
-            "toStation": leg['Destination']['name'],
-            "toTime": leg['Destination']['time'],
-        }
-        legsOut.append(currentLeg)
+        fromStation = leg['Origin']['name']
+        fromTime = leg['Origin']['time']
+        toStation = leg['Destination']['name']
+        toTime = leg['Destination']['time']
 
-    return json.dumps(legsOut)
+        totalTime = calculateTime(fromTime, toTime)
+        leg = Leg(fromStation, fromTime, toStation, toTime, totalTime)
+        legsOut.append(leg)
 
+    fromStation = jsonData['Trip'][0]['Origin']['name']
+    toStation = jsonData['Trip'][0]['Destination']['name']
+    fromTime = jsonData['Trip'][0]['Origin']['time']
+    toTime = jsonData['Trip'][0]['Destination']['time']
 
-# for entity in feed.entity:
- #   if entity.HasField('trip_update'):
-  #      print(entity.trip_update.stop_time_update)
+    totalTime = calculateTime(fromTime, toTime)
+
+    trip = Trip(fromStation, fromTime, toStation, toTime, totalTime, legsOut)
+
+    return jsonpickle.encode(trip)
+
+def calculateTime(fromTime, toTime):
+    fDate = datetime.strptime(fromTime, "%H:%M:%S")
+    tDate = datetime.strptime(toTime, "%H:%M:%S")
+    difference = tDate - fDate
+    differenceStr = format_timespan(difference.total_seconds())
+    return differenceStr

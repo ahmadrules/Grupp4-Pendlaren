@@ -18,7 +18,7 @@
 
                     $.ajax({
                         method: "GET",
-                        url: 'http://localhost:8000/?from-stop="' + fromStop + '"&to-stop="' + toStop,
+                        url: 'http://localhost:8000/from="' + fromStop + '"&to="' + toStop,
                         headers: {"Accept": "application/json"}
                     })
                 }
@@ -42,8 +42,8 @@
                 <section class="form-section">
                     <form class="trip-form">
                         <div class="form-group">
-                            <label for="from-stop">Från:</label>
-                            <select class="js-example-basic-single" id="from-stop" name="from-stop">
+                            <label for="from">Från:</label>
+                            <select class="js-example-basic-single" id="from" name="from">
                                 <option value=""> Välj hållplats</option>
                                 <option value="malmoC">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
@@ -52,8 +52,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="to-stop">Till:</label>
-                            <select class="js-example-basic-single" id="to-stop" name="to-stop">
+                            <label for="to">Till:</label>
+                            <select class="js-example-basic-single" id="to" name="to">
                                 <option value=""> Välj hållplats</option>
                                 <option value="malmoC">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
