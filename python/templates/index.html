@@ -8,39 +8,28 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../static/script.js"></script>
+        <script src="../static/script.js" defer></script>
 
         <script>
-            function getTrip() {
-                return function () {
-                    let fromStop = $('#from-stop').val();
-                    let toStop = $('#to-stop').val();
+            function login() {
+                var spotifyLoginWindow = window.open('http://accounts.spotify.com/authorize?client_id=e6740bb7feb04f329db3f1cf4ebffefe&redirect_uri=https://127.0.0.1:8000/callback&response_type=code&scope=playlist-modify-public playlist-modify-private',"_self");
+                // Close event
 
-                    $.ajax({
-                        method: "GET",
-                        url: 'http://localhost:8000/from="' + fromStop + '"&to="' + toStop,
-                        headers: {"Accept": "application/json"}
-                    })
-                }
             }
 
 
-            $(document).ready(function() {
-                $('.js-example-basic-single').select2();
-                $('#').click(getTrip());
-            });
         </script>
-
     </head>
 <body>
         <header class="site-header">
             <h1 class="logo-title">PENDLAREN</h1>
+            <button type="button" onclick="login()">Login to spotify</button>
         </header>
 
         <main class="site-main"> 
             <div class="main-layout">
                 <section class="form-section">
-                    <form class="trip-form">
+                    <form action="https://localhost:8000/search" method="GET" class="trip-form">
                         <div class="form-group">
                             <label for="from">Från:</label>
                             <select class="js-example-basic-single" id="from" name="from">
@@ -58,6 +47,15 @@
                                 <option value="malmoC">Malmö C</option>
                                 <option value="triangeln">Triangeln</option>
                                 <option value="ubatshallen">Ubåtshallen</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="genre">Genre:</label>
+                            <select class="js-example-basic-single" id="genre" name="genre">
+                                <option value=""> Välj genre</option>
+                                <option value="Pop">Pop</option>
+                                <option value="Rock">Rock</option>
+                                <option value="Rap">Rap</option>
                             </select>
                         </div>
                         <button type="submit" class="btn-search" id="searchBtn">SÖK</button>

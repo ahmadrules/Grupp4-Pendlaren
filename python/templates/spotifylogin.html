@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    // Open the auth popup
+    function login() {
+        var spotifyLoginWindow = window.open('http://accounts.spotify.com/authorize?client_id=e6740bb7feb04f329db3f1cf4ebffefe&redirect_uri=https://127.0.0.1:8000/callback&response_type=code&scope=user-read-private user-read-email');
+
+        // Close event
+        spotifyLoginWindow.onbeforeunload = function() {
+            var accessToken = localStorage.getItem('sp-accessToken');
+            var refreshToken = localStorage.getItem('sp-refreshToken');
+
+            // use the code to get an access token (as described in the documentation)
+        };
+    }
+
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <button type="button" onclick="login()">Login to spotify</button>
+</head>
+<body>
+
+</body>
+</html>
