@@ -29,10 +29,6 @@ async def getAccessToken():
         print("ERROR MESSAGE: " + r.reason)
     else:
         print(">>>FOUND ACCESS TOKEN")
-
-        with open('keys/SPOTIFY_ACCESS_TOKEN.txt', 'w') as f:
-            f.write(r.json()['access_token'])
-
         return r.json()['access_token']
 
 
