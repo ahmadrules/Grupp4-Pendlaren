@@ -1,8 +1,7 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
-/keys
-/keys
+/python/keys
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
