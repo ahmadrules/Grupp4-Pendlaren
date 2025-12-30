@@ -1,101 +1,118 @@
 <!DOCTYPE html>
 <html lang="sv">
-    <head>
-        <meta charset="UTF-8">
-        <title>PENDLAREN</title>
-        <link rel="stylesheet" href="../static/styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <title>PENDLAREN</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../static/script.js"></script>
-
-        <script>
-            function getTrip() {
-                return function () {
-                    let fromStop = $('#from-stop').val();
-                    let toStop = $('#to-stop').val();
-
-                    $.ajax({
-                        method: "GET",
-                        url: 'http://localhost:8000/from="' + fromStop + '"&to="' + toStop,
-                        headers: {"Accept": "application/json"}
-                    })
-                }
-            }
+    <!-- CSS -->
+    <link rel="stylesheet" href="../static/styles.css">
 
 
-            $(document).ready(function() {
-                $('.js-example-basic-single').select2();
-                $('#').click(getTrip());
-            });
-        </script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    </head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
+</head>
+
 <body>
-        <header class="site-header">
-            <h1 class="logo-title">PENDLAREN</h1>
-        </header>
 
-        <main class="site-main"> 
-            <div class="main-layout">
-                <section class="form-section">
-                    <form class="trip-form">
-                        <div class="form-group">
-                            <label for="from">Från:</label>
-                            <select class="js-example-basic-single" id="from" name="from">
-                                <option value=""> Välj hållplats</option>
-                                <option value="malmoC">Malmö C</option>
-                                <option value="triangeln">Triangeln</option>
-                                <option value="ubatshallen">Ubåtshallen</option>
-                            </select>
-                        </div>
+<header class="site-header">
+    <h1 class="logo-title">PENDLAREN</h1>
+</header>
 
-                        <div class="form-group">
-                            <label for="to">Till:</label>
-                            <select class="js-example-basic-single" id="to" name="to">
-                                <option value=""> Välj hållplats</option>
-                                <option value="malmoC">Malmö C</option>
-                                <option value="triangeln">Triangeln</option>
-                                <option value="ubatshallen">Ubåtshallen</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
-                    </form>
-                </section>
+<main class="site-main">
+    <div class="main-layout">
 
-                <section class="playlist-section">
-                    <div class="playlist-box">
-                        <p class="playlist-placeholder">
-                            Din tidsanpassade spellista visas här.
-                        </p>
-                    </div>
+        <section class="form-section">
 
-                    <!-- Tillfällig länk -->
-                    <a class="btn-play-now" href="http://www.demolatar.se" target="_blank"> 
-                        SPELA NU
-                    </a>
-                </section>
+            <form class="trip-form"
+                  action="http://localhost:8000/search"
+                  method="get">
 
-                <aside class="playlist-aside" aria-label="Sparade spellistor">
-                    <h2 class="aside-title">Spellistor</h2>
-                    <ul class="playlist-list">
-                        <li class="playlist-item playlist-item--empty">
-                            Inga sparade spellistor
-                        </li>
-                    </ul>
-                </aside>
-            </div>
-        </main>
+                <div class="form-group">
+                    <label for="from">Från:</label>
+                    <select class="js-example-basic-single" id="from" name="from" required>
+                        <option value="">Välj hållplats</option>
+                        <option value="malmoC">Malmö C</option>
+                        <option value="triangeln">Triangeln</option>
+                        <option value="ubatshallen">Ubåtshallen</option>
+                    </select>
+                </div>
 
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <p>
-                    Alla låtar är tagna från 
-                    <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+                <div class="form-group">
+                    <label for="to">Till:</label>
+                    <select class="js-example-basic-single" id="to" name="to" required>
+                        <option value="">Välj hållplats</option>
+                        <option value="malmoC">Malmö C</option>
+                        <option value="triangeln">Triangeln</option>
+                        <option value="ubatshallen">Ubåtshallen</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="genre">Genre:</label>
+                    <select class="js-example-basic-single" id="genre" name="genre" required>
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="HipHop">Hip-Hop</option>
+                        <option value="Blues">Blues</option>
+                        <option value="Jazz">Jazz</option>
+                        <option value="Country">Country</option>
+
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-search">
+                    SÖK
+                </button>
+            </form>
+        </section>
+
+
+        <section class="playlist-section">
+            <div class="playlist-box">
+                <p class="playlist-placeholder">
+                    Din tidsanpassade spellista visas här.
                 </p>
-                <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
             </div>
-        </footer>
+
+            <!--  Tillfällig länk, ej kopplad till backend ännu -->
+            <a class="btn-play-now" href="http://www.demolatar.se" target="_blank">
+                SPELA NU
+            </a>
+
+        </section>
+
+
+        <aside class="playlist-aside" aria-label="Sparade spellistor">
+            <h2 class="aside-title">Spellistor</h2>
+            <ul class="playlist-list">
+                <li class="playlist-item playlist-item--empty">
+                    Inga sparade spellistor
+                </li>
+            </ul>
+        </aside>
+
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p>
+            Alla låtar är tagna från
+            <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+        </p>
+        <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
+    </div>
+</footer>
+
 </body>
 </html>
