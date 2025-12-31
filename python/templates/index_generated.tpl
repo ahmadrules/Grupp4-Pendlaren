@@ -35,7 +35,7 @@
             await fetch(url, {
                     method: 'GET',
                     headers: {
-                        'Authorization': 'Bearer ' + '{{access_token}}'
+                        'Authorization': 'Bearer {{access_token}}'
                     }
                 }
             ).then(response => response.json())
@@ -92,7 +92,7 @@
             var url = "https://api.spotify.com/v1/users/" + userID + "/playlists"
 
             const date = new Date();
-            const time = date.getMonth() + "/" + date.getDate();
+            const time = date.getMonth() + "/" + date.getDate() + " {{genre}}";
 
             const myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + "{{access_token}}");
@@ -112,7 +112,7 @@
                 }
             ).then(response => response.json())
                 .then (function(json) {
-                    console.log(json);
+                    console.log(" Create playlist JSON: " + json);
                     playlist_id = json['id'];
                     images = json['images'];
                     playlistURL = json['external_urls']['spotify'];
@@ -166,12 +166,13 @@
                     playlistURL = json['external_urls']['spotify'];
 
                     images.forEach(item => {
-                        imageURL = item.url; // Accessing a property of each object
+                        imageURL = item.url;
+                        return;// Accessing a property of each object
                     });
 
                     console.log("Playlist ID: " + playlistID);
                     console.log("URL: " + playlistURL);
-                    console.log("Image URL: " + imageURL)
+                    console.log("Image URL: " + images[0].url)
 
                 });
 

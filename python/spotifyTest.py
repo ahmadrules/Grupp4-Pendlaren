@@ -25,7 +25,7 @@ async def getAccessToken():
 
     r = requests.post(url, data= data, headers=headers)
     if r.status_code != 200:
-        print("COULDNT FIND USER ID")
+        print("COULDNT FIND ACCESS TOKEN")
         print("ERROR MESSAGE: " + r.reason)
     else:
         print(">>>FOUND ACCESS TOKEN")
