@@ -8,7 +8,7 @@ import requests
 from Leg import Leg
 from Trip import Trip
 
-file = open("keys/API_KEY.txt")
+file = open("keys/TRAFIKLAB_KEY.txt")
 resAPI = file.read()
 
 async def fetchStopId(name):

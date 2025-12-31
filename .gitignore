@@ -8,7 +8,6 @@
 /dataSources.local.xml
 .idea/misc.xml
 /python/__pycache__
-/python/keys/API_KEY.txt
 /python/keys/SPOTIFY_SECRET.txt
 /python/keys/SPOTIFY_CODE.txt
 /python/keys/localhost+1-key.pem

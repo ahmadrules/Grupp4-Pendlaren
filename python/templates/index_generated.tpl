@@ -162,13 +162,8 @@
                 .then (function(json) {
                     console.log(json);
                     images = json['images'];
-                    imageURL = "";
+                    imageURL = images[0].url
                     playlistURL = json['external_urls']['spotify'];
-
-                    images.forEach(item => {
-                        imageURL = item.url;
-                        return;// Accessing a property of each object
-                    });
 
                     console.log("Playlist ID: " + playlistID);
                     console.log("URL: " + playlistURL);
