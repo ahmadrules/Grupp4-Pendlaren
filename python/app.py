@@ -7,10 +7,11 @@ from spotifyTest import fillPlaylist
 from spotifyTest import getAccessToken
 
 app = FastAPI()
-accessToken =  ""
 
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 templates = Jinja2Templates(directory="templates")
+
+accessToken = ""
 
 @app.get("/callback")
 async def loginSpotify(request: Request):
@@ -55,6 +56,7 @@ async def getTrip(request: Request):
     totalSeconds = trip.totalSeconds*1000
     totalTime = trip.totalTime
     print(totalTime)
+
 
     return templates.TemplateResponse('index_generated.tpl',
                                       context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})

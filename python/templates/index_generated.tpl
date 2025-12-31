@@ -207,20 +207,24 @@
                 <div class="form-group">
                     <label for="from">Från:</label>
                     <select class="js-example-basic-single" id="from" name="from">
-                        <option value=""> Välj hållplats</option>
                         <option value="malmoC">Malmö C</option>
                         <option value="triangeln">Triangeln</option>
                         <option value="ubatshallen">Ubåtshallen</option>
+                        <option value="AstorpC">AstorpC</option>
+                        <option value="KalmarC">KalmarC</option>
+                        <option value="HelsingborgC">HelsingborgC</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="to">Till:</label>
                     <select class="js-example-basic-single" id="to" name="to">
-                        <option value=""> Välj hållplats</option>
                         <option value="malmoC">Malmö C</option>
                         <option value="triangeln">Triangeln</option>
                         <option value="ubatshallen">Ubåtshallen</option>
+                        <option value="AstorpC">AstorpC</option>
+                        <option value="KalmarC">KalmarC</option>
+                        <option value="HelsingborgC">HelsingborgC</option>
                     </select>
                 </div>
                 <div class="form-group">

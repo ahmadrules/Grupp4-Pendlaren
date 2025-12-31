@@ -27,6 +27,7 @@ async def getAccessToken():
     if r.status_code != 200:
         print("COULDNT FIND ACCESS TOKEN")
         print("ERROR MESSAGE: " + r.reason)
+        print(r.text)
     else:
         print(">>>FOUND ACCESS TOKEN")
         return r.json()['access_token']
