@@ -8,7 +8,7 @@ import requests
 from Leg import Leg
 from Trip import Trip
 
-file = open("API_KEY.txt")
+file = open("keys/TRAFIKLAB_KEY.txt")
 resAPI = file.read()
 
 async def fetchStopId(name):
@@ -41,10 +41,9 @@ def readTrip(jsonData):
         toStation = leg['Destination']['name']
         toTime = leg['Destination']['time']
 
-        totalTime = calculateTime(fromTime, toTime)
+        totalTime = format_timespan(calculateTime(fromTime, toTime))
 
         modeOfTravel = readModeOfTravel(leg)
-        print(modeOfTravel)
 
         leg = Leg(fromStation, fromTime, toStation, toTime, totalTime, modeOfTravel[0], modeOfTravel[1])
         legsOut.append(leg)
@@ -54,17 +53,19 @@ def readTrip(jsonData):
     fromTime = jsonData['Trip'][0]['Origin']['time']
     toTime = jsonData['Trip'][0]['Destination']['time']
 
-    totalTime = calculateTime(fromTime, toTime)
+    totalSeconds = calculateTime(fromTime, toTime)
+    totalTime = format_timespan(totalSeconds)
 
-    trip = Trip(fromStation, fromTime, toStation, toTime, totalTime, legsOut)
+    trip = Trip(fromStation, fromTime, toStation, toTime, totalTime, totalSeconds, legsOut)
 
-    return jsonpickle.encode(trip)
+    print(jsonpickle.encode(trip))
+    return trip
 
 def calculateTime(fromTime, toTime):
     fDate = datetime.strptime(fromTime, "%H:%M:%S")
     tDate = datetime.strptime(toTime, "%H:%M:%S")
     difference = tDate - fDate
-    differenceStr = format_timespan(difference.total_seconds())
+    differenceStr = difference.total_seconds()
     return differenceStr
 
 def readModeOfTravel(jsonData):
