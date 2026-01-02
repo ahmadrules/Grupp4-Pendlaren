@@ -8,8 +8,7 @@ file = open("keys/SPOTIFY_SECRET.txt")
 client_secret = file.read()
 client_id = 'e6740bb7feb04f329db3f1cf4ebffefe'
 
-async def getAccessToken():
-    auth = open("keys/SPOTIFY_CODE.txt")
+async def getAccessToken(auth):
     authCC = client_id + ':' + client_secret
 
     authbytes = authCC.encode("utf-8")
