@@ -119,7 +119,7 @@ async def findRouteStops(stop1, stop2):
 
     if stopId1 != -1 and stopId2 != -1:
         response = requests.get(
-            "https://api.resbot.se/v2.1/trip?format=json&originId="
+            "https://api.resrobot.se/v2.1/trip?format=json&originId="
             + str(stopId1) + "&destId="
             + str(stopId2) +
             "&numF=1&format=json&passlist=1&showPassingPoints=true&accessId="

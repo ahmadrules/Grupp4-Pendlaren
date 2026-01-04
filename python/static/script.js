@@ -39,7 +39,7 @@ async function loadStopsFromQuery() {
 
     if (!fromStop || !toStop) return;
 
-    const res = await fetch('/route_stops?from=${encodeURIComponent(fromStop)}&to=${encodeURIComponent(toStop)}');
+    const res = await fetch(`/route_stops?from=${encodeURIComponent(fromStop)}&to=${encodeURIComponent(toStop)}`);
     const data = await res.json();
     renderStops(data.stops);
 }
