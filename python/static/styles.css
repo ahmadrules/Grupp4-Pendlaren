@@ -7,15 +7,15 @@
 
 /* Färgerna justeras här via root */
 :root {
-    --bg-main: #c98833;
-    --bg-light: #dfaa5b;
+    --bg-main: #083409;
+    --bg-light: #B5B5B5;
     --input-bg: #f4e9d7;
-    --text-dark: #4a2e15;
+    --text-dark: #083409;
 }
 
 body {
     background-color: var(--bg-main);
-    // DETTA GÖR SÖKOBJEKTERNAS TEXT VIT OCH OSYNLIG color: #ffffff;
+    /* DETTA GÖR SÖKOBJEKTERNAS TEXT VIT OCH OSYNLIG*/ color: #ffffff;
     margin: 0;
 }
 
