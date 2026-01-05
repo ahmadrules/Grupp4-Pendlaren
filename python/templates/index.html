@@ -1,105 +1,133 @@
 <!DOCTYPE html>
 <html lang="sv">
-    <head>
-        <meta charset="UTF-8">
-        <title>PENDLAREN</title>
-        <link rel="stylesheet" href="../static/styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <title>PENDLAREN</title>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../static/script.js" defer></script>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-        <script>
-            function login() {
-                var spotifyLoginWindow = window.open('http://accounts.spotify.com/authorize?client_id=e6740bb7feb04f329db3f1cf4ebffefe&redirect_uri=https://127.0.0.1:8000/callback&response_type=code&scope=playlist-modify-public playlist-modify-private',"_self");
-                // Close event
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="../static/script.js" defer></script>
 
-            }
+    <script>
+        function login() {
+            window.location.href =
+                "https://accounts.spotify.com/authorize" +
+                "?client_id=e6740bb7feb04f329db3f1cf4ebffefe" +
+                "&redirect_uri=https://127.0.0.1:8000/callback" +
+                "&response_type=code" +
+                "&scope=playlist-modify-public playlist-modify-private user-read-private user-read-email";
+        }
+    </script>
+</head>
 
-
-        </script>
-    </head>
 <body>
-        <header class="site-header">
-            <h1 class="logo-title">PENDLAREN</h1>
-            <button type="button" onclick="login()">Login to spotify</button>
-        </header>
 
-        <main class="site-main"> 
-            <div class="main-layout">
-                <section class="form-section">
-                    <form action="https://localhost:8000/search" method="GET" class="trip-form">
-                        <div class="form-group">
-                            <label for="from">Från:</label>
-                            <select class="js-example-basic-single" id="from" name="from">
-                                <option value="malmoC">Malmö C</option>
-                                <option value="triangeln">Triangeln</option>
-                                <option value="ubatshallen">Ubåtshallen</option>
-                                <option value="AstorpC">AstorpC</option>
-                                <option value="KalmarC">KalmarC</option>
-                                <option value="HelsingborgC">HelsingborgC</option>
-                            </select>
-                        </div>
+<header class="site-header">
+    <h1 class="logo-title">PENDLAREN</h1>
 
-                        <div class="form-group">
-                            <label for="to">Till:</label>
-                            <select class="js-example-basic-single" id="to" name="to">
-                                <option value=""> Välj hållplats</option>
-                                <option value="malmoC">Malmö C</option>
-                                <option value="triangeln">Triangeln</option>
-                                <option value="ubatshallen">Ubåtshallen</option>
-                                <option value="AstorpC">AstorpC</option>
-                                <option value="KalmarC">KalmarC</option>
-                                <option value="HelsingborgC">HelsingborgC</option>
+    <div class="user-info">
+        {% if request.cookies.get("spotify_logged_in") == "true" %}
+        <div class="spotify-user">
+            {% if request.cookies.get("spotify_image") %}
+            <img
+                    src="{{ request.cookies.get('spotify_image') }}"
+                    alt="Profilbild"
+                    class="spotify-avatar">
+            {% endif %}
+            <span class="spotify-name">
+                    {{ request.cookies.get("spotify_username") }}
+                </span>
+        </div>
+        {% else %}
+        <button type="button" onclick="login()" id="login">
+            Login
+        </button>
+        {% endif %}
+    </div>
+</header>
 
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="genre">Genre:</label>
-                            <select class="js-example-basic-single" id="genre" name="genre">
-                                <option value=""> Välj genre</option>
-                                <option value="Pop">Pop</option>
-                                <option value="Rock">Rock</option>
-                                <option value="Rap">Rap</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
-                    </form>
-                </section>
+<main class="site-main">
+    <div class="main-layout">
 
-                <section class="playlist-section">
-                    <div class="playlist-box">
-                        <p class="playlist-placeholder">
-                            Din tidsanpassade spellista visas här.
-                        </p>
-                    </div>
+        <section class="form-section">
+            <form action="https://localhost:8000/search" method="GET" class="trip-form">
 
-                    <!-- Tillfällig länk -->
-                    <a class="btn-play-now" href="http://www.demolatar.se" target="_blank"> 
-                        SPELA NU
-                    </a>
-                </section>
+                <div class="form-group">
+                    <label for="from">Från:</label>
+                    <select class="js-example-basic-single" id="from" name="from">
+                        <option value="malmoC">Malmö C</option>
+                        <option value="triangeln">Triangeln</option>
+                        <option value="ubatshallen">Ubåtshallen</option>
+                        <option value="AstorpC">AstorpC</option>
+                        <option value="KalmarC">KalmarC</option>
+                        <option value="HelsingborgC">HelsingborgC</option>
+                    </select>
+                </div>
 
-                <aside class="playlist-aside" aria-label="Sparade spellistor">
-                    <h2 class="aside-title">Spellistor</h2>
-                    <ul class="playlist-list">
-                        <li class="playlist-item playlist-item--empty">
-                            Inga sparade spellistor
-                        </li>
-                    </ul>
-                </aside>
-            </div>
-        </main>
+                <div class="form-group">
+                    <label for="to">Till:</label>
+                    <select class="js-example-basic-single" id="to" name="to">
+                        <option value="">Välj hållplats</option>
+                        <option value="malmoC">Malmö C</option>
+                        <option value="triangeln">Triangeln</option>
+                        <option value="ubatshallen">Ubåtshallen</option>
+                        <option value="AstorpC">AstorpC</option>
+                        <option value="KalmarC">KalmarC</option>
+                        <option value="HelsingborgC">HelsingborgC</option>
+                    </select>
+                </div>
 
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <p>
-                    Alla låtar är tagna från 
-                    <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+                <div class="form-group">
+                    <label for="genre">Genre:</label>
+                    <select class="js-example-basic-single" id="genre" name="genre">
+                        <option value="">Välj genre</option>
+                        <option value="Pop">Pop</option>
+                        <option value="Rock">Rock</option>
+                        <option value="Rap">Rap</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-search">
+                    SÖK
+                </button>
+            </form>
+        </section>
+
+        <section class="playlist-section">
+            <div class="playlist-box">
+                <p class="playlist-placeholder">
+                    Din tidsanpassade spellista visas här.
                 </p>
-                <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
             </div>
-        </footer>
+
+            <a class="btn-play-now" id="playBtn" target="_blank">
+                SPELA NU
+            </a>
+        </section>
+
+        <aside class="playlist-aside" aria-label="Sparade spellistor">
+            <h2 class="aside-title">Spellistor</h2>
+            <ul class="playlist-list">
+                <li class="playlist-item playlist-item--empty">
+                    Inga sparade spellistor
+                </li>
+            </ul>
+        </aside>
+
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p>
+            Alla låtar är tagna från
+            <a href="https://open.spotify.com" target="_blank">Spotify</a>
+        </p>
+    </div>
+</footer>
+
 </body>
 </html>

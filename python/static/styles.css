@@ -192,3 +192,54 @@ body {
 .footer-logo {
     height: 40px;
 }
+
+
+.site-header {
+    position: relative;
+}
+
+.user-info {
+    position: absolute;
+    top: 2.5rem;
+    right: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+.spotify-user {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 0.4rem 0.8rem;
+    border-radius: 2rem;
+}
+
+.spotify-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ffffff;
+}
+
+.spotify-name {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+#login {
+    padding: 0.6rem 1.4rem;
+    border-radius: 1.5rem;
+    border: 2px solid #ffffff;
+    background-color: transparent;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#login:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
