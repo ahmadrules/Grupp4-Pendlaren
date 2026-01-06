@@ -7,16 +7,24 @@
 
 /* Färgerna justeras här via root */
 :root {
-    --bg-main: #c98833;
-    --bg-light: #dfaa5b;
-    --input-bg: #f4e9d7;
-    --text-dark: #4a2e15;
+    --bg-main: #083409; /* Mörkgrön */
+    --bg-light: #B5B5B5; /* Ljusgrå */
+    --text-muted: #535353; /* Mörkgrå */
+    --accent: #1ED760; /* Spotify-grön */
+
+    /* Textfärger enl. WCAG */
+    --text-on-dark: #ffffff; /* Text på mörkgrönt */
+    --text-on-light: #084309; /* Text på ljusa ytor */
+
+    --surface: #ffffff;
+    --surface-soft: rgba(181, 181, 181, 0.25);
 }
 
 body {
     background-color: var(--bg-main);
-    // DETTA GÖR SÖKOBJEKTERNAS TEXT VIT OCH OSYNLIG color: #ffffff;
+    color: var(--text-on-dark);
     margin: 0;
+    line-height: 1.4;
 }
 
 /* Header */
@@ -26,10 +34,25 @@ body {
     padding: 2rem 3rem 1rem;
 }
 
+.site-header button {
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 2px solid var(--accent);
+    background-color: transparent;
+    color: var(--accent);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.site-header button:hover {
+    filter: brightness(1.1);
+}
+
 .logo-title {
     font-size: clamp(3rem, 6vw, 5rem);
     font-weight: 800;
     letter-spacing: 0.15em;
+    color: var(--accent);
 }
 
 /* Main */
@@ -65,16 +88,21 @@ body {
     display: block;
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
+    color: var(--text-on-dark);
 }
 
 .form-group select {
     width: 100%;
     padding: 0.8rem 1rem;
-    border-radius: 0.25rem;
-    border: none;
-    background-color: var(--input-bg);
-    color: var(--text-dark);
+    border-radius: 0.5rem;
+    border: 2px solid transparent;
+    background-color: var(--surface);
+    color: var(--text-on-light);
     font-size: 1rem;
+}
+
+.form-group select:focus-visible {
+    border-color: var(--accent);
 }
 
 .btn-search {
@@ -83,11 +111,15 @@ body {
     padding: 0.9rem 2.5rem;
     border: none;
     border-radius: 0.75rem;
-    background-color: var(--bg-light);
-    color: #ffffff;
+    background-color: var(--accent);
+    color: var(--bg-main);
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 800;
     cursor: pointer;
+}
+
+.btn-search:hover {
+    filter: brightness(1.05);
 }
 
 .playlist-section {
@@ -100,15 +132,17 @@ body {
 .playlist-box {
     width: 100%;
     aspect-ratio: 4 / 3;
-    background-color: rgba(244, 233, 215, 0.45);
+    background-color: var(--surface-soft);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .playlist-placeholder {
-    color: #ffffff;
+    color: var(--text-on-dark);
     text-align: center;
     font-size: 1.1rem;
 }
@@ -126,26 +160,28 @@ body {
     text-decoration: none;
 }
 
+.btn-play-now:hover {
+    filter: brightness(1.1);
+}
+
 /* Aside: sparade spellistor (höger) */
 
 .playlist-aside {
-    background-color: #ffffff;
-    color: var(--text-dark);
+    background-color: var(--bg-light);
+    color: var(--text-on-light);
     padding: 1.5rem 1.5rem 2rem;
-    text-align: right;
+    text-align: left;
     align-self: stretch;
     height: 100%;
-}
-
-.playlist-aside .aside-title,
-.playlist-aside .playlist-item {
-    color: var(--text-dark);
+    border-radius: 0.75rem;
 }
 
 .aside-title {
+    text-align: center;
     font-size: 1.8rem;
     text-decoration: underline;
     text-underline-offset: 0.2em;
+    color: var(--text-on-light);
 }
 
 .playlist-list {
@@ -155,18 +191,19 @@ body {
 
 .playlist-item {
     font-size: 0.95rem;
-    color: #fff;
+    color: var(--text-on-light);
 }
 
 .playlist-item--empty {
-    opacity: 0.8;
+    opacity: 0.9;
+    color: var(--text-muted);
 }
 
 /* Footer */
 
 .site-footer {
-    background-color: #ffffff;
-    color: var(--text-dark);
+    background-color: var(--bg-light);
+    color: var(--text-on-light);
     padding: 1rem 3rem 2rem;
     border-top: 2px solid var(--bg-main);
     font-size: 0.95rem;
@@ -180,7 +217,7 @@ body {
 }
 
 .site-footer a {
-    color: var(--bg-main);
+    color: var(--text-on-light);
     font-weight: 700;
     text-decoration: none;
 }

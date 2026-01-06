@@ -252,8 +252,8 @@
             </a>
         </section>
 
-        <aside class="playlist-aside" aria-label="Sparade spellistor">
-            <h2 class="aside-title">Spellistor</h2>
+        <aside class="playlist-aside" aria-label="Resans rutt">
+            <h2 class="aside-title">Resans rutt</h2>
             <ul class="playlist-list">
                 <li class="playlist-item playlist-item--empty">
                     Inga sparade spellistor
