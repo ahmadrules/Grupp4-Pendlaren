@@ -17,11 +17,8 @@ accessToken = ""
 async def loginSpotify(request: Request):
     code = request.query_params.get("code")
     print(code)
-    with open('keys/SPOTIFY_CODE.txt', 'w') as f:
-        f.write(request.query_params.get('code'))
-
     global accessToken
-    accessToken = await getAccessToken()
+    accessToken = await getAccessToken(code)
 
     return templates.TemplateResponse('index.html', context={'request': request})
 

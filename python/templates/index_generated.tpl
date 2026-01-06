@@ -92,13 +92,14 @@
             var url = "https://api.spotify.com/v1/users/" + userID + "/playlists"
 
             const date = new Date();
-            const time = date.getMonth() + "/" + date.getDate() + " {{genre}}";
+            const time = date.getDate()  + "/" + (date.getMonth() + 1) + " {{genre}}, {{fromStop}} - {{toStop}}";
 
             const myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + "{{access_token}}");
             myHeaders.append("Content-Type", "application/json");
 
-            const data = JSON.stringify({name: time, description: "Spellista för resa från {{fromStop}} till {{toStop}}"});
+            const json = {name: time, description: "Spellista för resa från {{fromStop}} till {{toStop}}"}
+            const data = JSON.stringify(json);
 
             var playlist_id = "";
             var playlistURL = "";
