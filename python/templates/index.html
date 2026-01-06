@@ -1,91 +1,102 @@
 <!DOCTYPE html>
 <html lang="sv">
-    <head>
-        <meta charset="UTF-8">
-        <title>PENDLAREN</title>
-        <link rel="stylesheet" href="../static/styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<head>
+    <meta charset="UTF-8">
+    <title>PENDLAREN</title>
+    <link rel="stylesheet" href="../static/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="../static/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="../static/script.js"></script>
 
-        <script>
-            function getTrip() {
-                return function () {
-                    let fromStop = $('#from-stop').val();
-                    let toStop = $('#to-stop').val();
+    <script>
+        function getTrip() {
+            let fromStop = $('#from').val();
+            let toStop = $('#to').val();
 
-                    $.ajax({
-                        method: "GET",
-                        url: 'http://localhost:8000/from="' + fromStop + '"&to="' + toStop,
-                        headers: {"Accept": "application/json"}
-                    })
-                }
+            if (!fromStop || !toStop) {
+                alert("Vänligen välj både från- och till-hållplats!");
+                return;
             }
 
-
-            $(document).ready(function() {
-                $('.js-example-basic-single').select2();
-                $('#').click(getTrip());
+            $.ajax({
+                method: "GET",
+                url: 'http://localhost:8000/from="' + fromStop + '"&to="' + toStop + '"',
+                headers: {"Accept": "application/json"},
+                success: function(data) {
+                    console.log("Resa hittad:", data);
+                    // Här kan du lägga till kod för att hantera svaret
+                },
+                error: function(error) {
+                    console.error("Fel vid hämtning av resa:", error);
+                    alert("Kunde inte hitta resa. Försök igen.");
+                }
             });
-        </script>
+        }
 
-    </head>
+        $(document).ready(function() {
+            $('#searchBtn').click(function(event) {
+                event.preventDefault();
+                getTrip();
+            });
+        });
+    </script>
+</head>
 <body>
-        <header class="site-header">
-            <h1 class="logo-title">PENDLAREN</h1>
-        </header>
+<header class="site-header">
+    <h1 class="logo-title">PENDLAREN</h1>
+</header>
 
-        <main class="site-main"> 
-            <div class="main-layout">
-                <section class="form-section">
-                    <form class="trip-form">
-                        <div class="form-group">
-                            <label for="from">Från:</label>
-                            <select class="js-example-basic-single" id="from" name="from"></select>
-                        </div>
+<main class="site-main">
+    <div class="main-layout">
+        <section class="form-section">
+            <form class="trip-form">
+                <div class="form-group">
+                    <label for="from">Från:</label>
+                    <select class="js-example-basic-single" id="from" name="from"></select>
+                </div>
 
-                        <div class="form-group">
-                            <label for="to">Till:</label>
-                            <select class="js-example-basic-single" id="to" name="to"></select>
-                        </div>
-                        <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
-                    </form>
-                </section>
+                <div class="form-group">
+                    <label for="to">Till:</label>
+                    <select class="js-example-basic-single" id="to" name="to"></select>
+                </div>
+                <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
+            </form>
+        </section>
 
-                <section class="playlist-section">
-                    <div class="playlist-box">
-                        <p class="playlist-placeholder">
-                            Din tidsanpassade spellista visas här.
-                        </p>
-                    </div>
-
-                    <!-- Tillfällig länk -->
-                    <a class="btn-play-now" href="http://www.demolatar.se" target="_blank"> 
-                        SPELA NU
-                    </a>
-                </section>
-
-                <aside class="playlist-aside" aria-label="Sparade spellistor">
-                    <h2 class="aside-title">Spellistor</h2>
-                    <ul class="playlist-list">
-                        <li class="playlist-item playlist-item--empty">
-                            Inga sparade spellistor
-                        </li>
-                    </ul>
-                </aside>
-            </div>
-        </main>
-
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <p>
-                    Alla låtar är tagna från 
-                    <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+        <section class="playlist-section">
+            <div class="playlist-box">
+                <p class="playlist-placeholder">
+                    Din tidsanpassade spellista visas här.
                 </p>
-                <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
             </div>
-        </footer>
+
+            <!-- Tillfällig länk -->
+            <a class="btn-play-now" href="http://www.demolatar.se" target="_blank">
+                SPELA NU
+            </a>
+        </section>
+
+        <aside class="playlist-aside" aria-label="Sparade spellistor">
+            <h2 class="aside-title">Spellistor</h2>
+            <ul class="playlist-list">
+                <li class="playlist-item playlist-item--empty">
+                    Inga sparade spellistor
+                </li>
+            </ul>
+        </aside>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p>
+            Alla låtar är tagna från
+            <a href="http://www.demolatar.se" target="_blank">Demolåtar.se</a>
+        </p>
+        <img src="demolatarlogga.gif" alt="Demolåtar.se logga" class="footer-logo">
+    </div>
+</footer>
 </body>
 </html>

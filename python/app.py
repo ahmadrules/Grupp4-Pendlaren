@@ -7,8 +7,8 @@ import trafikLab
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="python/static", html=True), name="static")
-templates = Jinja2Templates(directory="python/templates")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def index(request: Request):
