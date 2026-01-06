@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script type="text/javascript" src="../static/script.js" defer></script>
+    <script src="../static/script.js" defer></script>
 
     <script type="text/javascript">
         function login() {
@@ -208,24 +209,12 @@
                 <div class="form-group">
                     <label for="from">Från:</label>
                     <select class="js-example-basic-single" id="from" name="from">
-                        <option value="malmoC">Malmö C</option>
-                        <option value="triangeln">Triangeln</option>
-                        <option value="ubatshallen">Ubåtshallen</option>
-                        <option value="AstorpC">AstorpC</option>
-                        <option value="KalmarC">KalmarC</option>
-                        <option value="HelsingborgC">HelsingborgC</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="to">Till:</label>
                     <select class="js-example-basic-single" id="to" name="to">
-                        <option value="malmoC">Malmö C</option>
-                        <option value="triangeln">Triangeln</option>
-                        <option value="ubatshallen">Ubåtshallen</option>
-                        <option value="AstorpC">AstorpC</option>
-                        <option value="KalmarC">KalmarC</option>
-                        <option value="HelsingborgC">HelsingborgC</option>
                     </select>
                 </div>
                 <div class="form-group">
