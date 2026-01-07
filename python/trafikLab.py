@@ -30,7 +30,6 @@ async def fetchStopId(name):
         
     return -1
     
-    
     #return data['stopLocationOrCoordLocation'][0]['StopLocation']['extId']
 
 async def findTrip(stop1, stop2):
@@ -107,50 +106,12 @@ def readModeOfTravel(jsonData):
     else:
         line = int(product.replace('Länstrafik - Tåg ', ''))
         return ['Pågatåg', line]
-    
-def _as_list(x):
-    if x is None:
+
+def get_transfer_stops(trip: Trip):
+    """
+    Returnerar en lista över stationer där byten ska ske. Första leg är en resa, alla efter det motsvarar ett byte.
+    """
+    legs = getattr(trip, "legs", None)
+    if not legs or len(legs) <= 1:
         return []
-    return x if isinstance(x, list) else [x]
-
-async def findRouteStops(stop1, stop2):
-    stopId1 = await fetchStopId(stop1)
-    stopId2 = await fetchStopId(stop2)
-
-    if stopId1 != -1 and stopId2 != -1:
-        response = requests.get(
-            "https://api.resrobot.se/v2.1/trip?format=json&originId="
-            + str(stopId1) + "&destId="
-            + str(stopId2) +
-            "&numF=1&format=json&passlist=1&showPassingPoints=true&accessId="
-            + resAPI
-        )
-        data = json.loads(response.content)
-
-        legs = data['Trip'][0]['LegList']['Leg']
-        route = []
-        seen = set()
-
-        for leg in legs:
-            stops_block = leg.get("Stops", {}).get("Stop")
-
-            stops = []
-            for s in _as_list(stops_block):
-                name = s.get("name")
-                if name:
-                    stops.append(name)
-
-            # Om det ej finns några stopp längst rutten
-            if not stops:
-                stops = [leg["Origin"]["name"], leg ["Destination"]["name"]]
-
-            for name in stops:
-                key = name.strip().lower()
-                if not route or route[-1] != name:
-                    if key not in seen:
-                        route.append(name)
-                        seen.add(key)
-
-            return route
-        
-        return []
+    return [legs[i].fromStop for i in range(1, len(legs))]

@@ -1,7 +1,6 @@
 from fastapi.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
 
 import trafikLab
 from spotifyTest import fillPlaylist
@@ -39,6 +38,7 @@ async def spotify_login(request: Request):
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+
 @app.get("/search")
 async def getTrip(request: Request):
     print(request.query_params)
@@ -51,20 +51,18 @@ async def getTrip(request: Request):
     print(fromStop, toStop)
     trip = await trafikLab.findTrip(fromStop, toStop)
 
+    transfer_stops = trafikLab.get_transfer_stops(trip)
+
     totalSeconds = trip.totalSeconds*1000
     totalTime = trip.totalTime
     print(totalTime)
 
-
     return templates.TemplateResponse('index_generated.tpl',
-                                      context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})
+                                      context={'request': request, 
+                                               'access_token' : accessToken, 
+                                               'total_seconds' : totalSeconds, 
+                                               'genre' : genre, 
+                                               'fromStop' : fromStop, 
+                                               'toStop' : toStop,
+                                               'transfer_stops': transfer_stops})
     #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
-
-@app.get("/route_stops")
-async def route_stops(request: Request):
-    query_params = request.query_params
-    fromStop = query_params.get("from")
-    toStop = query_params.get("to")
-
-    stops = await trafikLab.findRouteStops(fromStop, toStop)
-    return JSONResponse({"stops": stops})

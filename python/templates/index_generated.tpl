@@ -252,12 +252,19 @@
             </a>
         </section>
 
-        <aside class="playlist-aside" aria-label="Resans rutt">
-            <h2 class="aside-title">Resans rutt</h2>
+        <aside class="playlist-aside" aria-label="Byten längs rutten">
+            <h2 class="aside-title">Byten längst rutten</h2>
             <ul class="playlist-list">
-                <li class="playlist-item playlist-item--empty">
-                    Inga sparade spellistor
-                </li>
+                {% if transfer_stops and transfer_stops|length > 0 %}
+                    <li class="playlist-item">Antal byten: {{transfer_stops|length }}</li>
+                    
+                {% for stop in transfer_stops %}
+                    <li class="playlist-item">Byte vid: {{ stop }}</li>
+                {% endfor ‰}
+
+                {% else %}
+                    <li class="playlist-item playlist-item--empty">Direktresa (inga byten)</li>
+                {% endif ‰}
             </ul>
         </aside>
     </div>
