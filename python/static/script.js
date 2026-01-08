@@ -57,4 +57,9 @@ $(document).ready(function () {
 
     // Börja med första sökvägen
     tryLoadStops(0);
-});
+});});
+
+function getCookie() {
+    document.getElementById("login").innerHTML = document.cookie;
+    return document.cookie;
+}
