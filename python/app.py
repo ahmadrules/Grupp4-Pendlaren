@@ -39,11 +39,34 @@ async def loginSpotify(request: Request):
     # Redirect till startsidan + sätt cookies
     response = RedirectResponse(url="/")
 
-    response.set_cookie("spotify_logged_in", "true", httponly=False)
-    response.set_cookie("spotify_username", username, httponly=False)
-    response.set_cookie("spotify_image", image_url, httponly=False)
+    response = RedirectResponse(url="/")
+
+    response.set_cookie(
+        key="spotify_logged_in",
+        value="true",
+        httponly=False,
+        secure=True,
+        samesite="lax"
+    )
+
+    response.set_cookie(
+        key="spotify_username",
+        value=username,
+        httponly=False,
+        secure=True,
+        samesite="lax"
+    )
+
+    response.set_cookie(
+        key="spotify_image",
+        value=image_url,
+        httponly=False,
+        secure=True,
+        samesite="lax"
+    )
 
     return response
+
 
 @app.get("/")
 async def index(request: Request):
