@@ -260,11 +260,11 @@
                     
                 {% for stop in transfer_stops %}
                     <li class="playlist-item">Byte vid: {{ stop }}</li>
-                {% endfor ‰}
+                {% endfor %}
 
                 {% else %}
                     <li class="playlist-item playlist-item--empty">Direktresa (inga byten)</li>
-                {% endif ‰}
+                {% endif %}
             </ul>
         </aside>
     </div>
