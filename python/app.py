@@ -24,6 +24,7 @@ async def loginSpotify(request: Request):
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+
 @app.get("/search")
 async def getTrip(request: Request):
     print(request.query_params)
@@ -42,7 +43,6 @@ async def getTrip(request: Request):
     totalTime = trip.totalTime
 
     print(totalTime)
-    if request.headers.get('Content-Type') == 'application/json':
 
 
     return templates.TemplateResponse('index_generated.tpl',

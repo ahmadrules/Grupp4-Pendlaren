@@ -7,6 +7,7 @@ $(document).ready(function () {
         placeholder: "Välj hållplats"
     });
 
+// HEAD
     const jsonPaths = [
         "/static/stops_skane.json",
         "./static/stops_skane.json",
@@ -57,7 +58,7 @@ $(document).ready(function () {
 
     // Börja med första sökvägen
     tryLoadStops(0);
-});});
+});
 
 function getCookie() {
     document.getElementById("login").innerHTML = document.cookie;
