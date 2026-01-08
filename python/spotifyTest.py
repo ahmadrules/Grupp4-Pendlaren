@@ -45,6 +45,7 @@ async def getUserID():
         print(">>>USER ID")
         with open("keys/SPOTIFY_USER_ID.txt", "w") as f:
             f.write(r.json()['id'])
+        return r.json()['id']
 
 async def searchForTracks(genre):
     q = 'q=remaster%2520genre%3A'+ genre + '&type=track&market=SE&limit=50'
@@ -88,7 +89,7 @@ async def createPlaylist():
         print("ERROR CREATING PLAYLIST")
 
 async def getLatestCreatedPlaylist():
-    userID = open( "keys/SPOTIFY_USER_ID.txt").read()
+    userID = getUserID()
     auth = open("keys/SPOTIFY_ACCESS_TOKEN.txt").read()
 
     url = "https://api.spotify.com/v1/users/" + userID + "/playlists"

@@ -12,28 +12,14 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 templates = Jinja2Templates(directory="templates")
 
-accessToken = ""
-
 @app.get("/callback")
 async def loginSpotify(request: Request):
     code = request.query_params.get("code")
     print(code)
-    global accessToken
     accessToken = await getAccessToken(code)
+    request.session["accessToken"] = accessToken
 
     return templates.TemplateResponse('index.html', context={'request': request})
-
-@app.post("/spotify/generate_playlist/genre={genre}")
-async def spotifyGeneratePlaylist(request: Request, genre: str):
-    playlistInfo = await fillPlaylist(genre)
-    url = playlistInfo["url"]
-    image = playlistInfo["image"]
-    return templates.TemplateResponse('index_generated.tpl', context={'request': request, 'url': url, 'image': image})
-
-
-@app.get("/spotify/login")
-async def spotify_login(request: Request):
-    return templates.TemplateResponse('spotifylogin.html', context={'request': request})
 
 @app.get("/")
 async def index(request: Request):
@@ -53,12 +39,16 @@ async def getTrip(request: Request):
 
     totalSeconds = trip.totalSeconds*1000
     totalTime = trip.totalTime
+
     print(totalTime)
+    accessToken = request.session.get("accessToken")
+    print("Current sessions accessToken: " + accessToken)
 
+    if request.headers.get('Content-Type') == 'application/json':
 
-    return templates.TemplateResponse('index_generated.tpl',
-                                      context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})
-    #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
+        
+
+    return templates.TemplateResponse('index_generated.tpl', context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop,'toStop' : toStop})
 
 @app.get("/route_stops")
 async def route_stops(request: Request):
