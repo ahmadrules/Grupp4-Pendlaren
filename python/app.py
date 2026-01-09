@@ -20,10 +20,11 @@ async def loginSpotify(request: Request):
     code = request.query_params.get("code")
     print(code)
 
+    global accessToken
     accessToken = await getAccessToken(code)
 
     response = templates.TemplateResponse('index.html', context={'request': request})
-    response.set_cookie(key="accessToken", value=accessToken, samesite="strict", max_age=8000)
+    response.set_cookie(key="accessToken", value=accessToken, samesite="lax", max_age=8000)
 
     print(response.headers)
 
@@ -42,7 +43,6 @@ class Search(BaseModel):
 async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(), genre: str = Form()):
     print(fromStop, toStop)
     trip = await trafikLab.findTrip(fromStop, toStop)
-
     transfer_stops = trafikLab.get_transfer_stops(trip)
 
     totalSeconds = trip.totalSeconds*1000
@@ -50,7 +50,7 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
 
     print(totalTime)
 
-    accessToken = request.cookies.get("accessToken")
+    #accessToken = request.cookies.get("accessToken")
     #print("RETRIEVED ACCESS TOKEN FROM COOKIES" + access_Token)
 
     return templates.TemplateResponse('index_generated.tpl',

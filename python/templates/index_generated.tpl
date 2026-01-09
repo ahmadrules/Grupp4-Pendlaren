@@ -20,7 +20,7 @@
             console.log("Before userID: " + document.cookie);
             let url = "https://api.spotify.com/v1/me";
 
-            out = "";
+            let out1 = "";
 
             await fetch(url, {
                     method: 'GET',
@@ -29,9 +29,11 @@
                     }
                 }
             ).then(response => response.json())
-                .then(out => document.cookie = "userID=" + out['id'] + "; path=/")
+                .then(out => {document.cookie = "userID=" + out['id'] + "; path=/", out1 = out})
                 .catch(err => console.log("Error " + err))
                 .then(response => console.log("After userID: " + document.cookie));
+
+            console.log(out1)
 
             await fillPlaylist();
         }
