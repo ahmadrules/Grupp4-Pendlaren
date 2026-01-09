@@ -187,10 +187,7 @@
 <body>
 <header class="site-header">
     <h1 class="logo-title">PENDLAREN</h1>
-    <button type="button" onclick="login()" id="login">Login</button>
-    <button type="button" href="https://localhost:8000" id="return">Return</button>
 
-    <button type="button" onclick=getCookie()>Reveal cookie</button>
 </header>
 
 <main class="site-main">
