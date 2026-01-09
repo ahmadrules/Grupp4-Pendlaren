@@ -2,6 +2,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.responses import JSONResponse, Response
 from starlette.templating import Jinja2Templates
+from trafikLab import get_transfer_details
 
 from fastapi import Cookie, FastAPI, Request, Form
 
@@ -43,7 +44,7 @@ class Search(BaseModel):
 async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(), genre: str = Form()):
     print(fromStop, toStop)
     trip = await trafikLab.findTrip(fromStop, toStop)
-    transfer_stops = trafikLab.get_transfer_stops(trip)
+    transfer_details = trafikLab.get_transfer_details(trip)
 
     totalSeconds = trip.totalSeconds*1000
     totalTime = trip.totalTime
@@ -54,7 +55,7 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
     #print("RETRIEVED ACCESS TOKEN FROM COOKIES" + access_Token)
 
     return templates.TemplateResponse('index_generated.tpl',
-                                      context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})
+                                      context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop, 'trip' : trip, 'transfers' : transfer_details})
     #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
 
 @app.get("/route_stops")

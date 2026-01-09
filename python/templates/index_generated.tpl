@@ -233,19 +233,32 @@
         </section>
 
         <aside class="playlist-aside" aria-label="Byten längs rutten">
-            <h2 class="aside-title">Byten längst rutten</h2>
-            <ul class="playlist-list">
-                {% if transfer_stops and transfer_stops|length > 0 %}
-                    <li class="playlist-item">Antal byten: {{transfer_stops|length }}</li>
-                    
-                {% for stop in transfer_stops %}
-                    <li class="playlist-item">Byte vid: {{ stop }}</li>
-                {% endfor %}
+            <h2 class="aside-title">Reseinformation</h2>
+            <div class="trip-info">
+                <div class="trip-summary">
+                    <p><strong>Från:</strong> {{ trip.fromStop }}</p>
+                    <p><strong>Avgång:</strong> {{ trip.fromTime[:5] }}</p>
+                    <p><strong>Till:</strong> {{ trip.toStop }}</p>
+                    <p><strong>Ankomst:</strong> {{ trip.toTime[:5] }}</p>
+                    <p><strong>Restid:</strong> {{ trip.totalTime }}</p>
+                </div>
 
-                {% else %}
-                    <li class="playlist-item playlist-item--empty">Direktresa (inga byten)</li>
-                {% endif %}
-            </ul>
+            <h3></br>Byten längs rutten</h3>
+            {% if transfers and transfers | length > 0 %}
+                <ul>
+                    {% for t in transfers %}
+                        </br><li>
+                            <strong>{{ t.station }}</strong><br>
+                            Ankomst: {{ t.arrival }}</br>
+                            Avgång: {{ t.departure }}</br>
+                            </br>Bytestid: {{ t.wait_minutes }} minuter</br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Inga byten på denna resa.</p>
+            {% endif %}
+
         </aside>
     </div>
 </main>
