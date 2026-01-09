@@ -229,3 +229,11 @@ body {
 .footer-logo {
     height: 40px;
 }
+
+.select2-container {
+    color: #084309;
+}
+
+.select2-dropdown {
+    background-color: #ffffff;
+}
