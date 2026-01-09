@@ -16,17 +16,6 @@
             window.open('http://accounts.spotify.com/authorize?client_id=e6740bb7feb04f329db3f1cf4ebffefe&redirect_uri=https://127.0.0.1:8000/callback&response_type=code&scope=playlist-modify-public playlist-modify-private');
         }
 
-        function resetCookies() {
-            document.cookie = "userID=" + "{{access_token}}" + "; path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            document.cookie = "access_token=" + "{{access_token}}" + "; path=/;expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            document.cookie = "spotify_auth_state = t; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            //console.log("Before: " + document.cookie);
-            //document.cookie = "access_token=" + "{{access_token}}" + "; path=/";
-            //console.log("After: " + document.cookie);
-        }
-        resetCookies();
-
-
         async function getUserID() {
             console.log("Before userID: " + document.cookie);
             let url = "https://api.spotify.com/v1/me";
@@ -205,7 +194,7 @@
 <main class="site-main">
     <div class="main-layout">
         <section class="form-section">
-            <form action="https://localhost:8000/search" method="GET" class="trip-form">
+            <form action="https://localhost:8000/search" method="POST" class="trip-form">
                 <div class="form-group">
                     <label for="from">Från:</label>
                     <select class="js-example-basic-single" id="from" name="from">
@@ -214,7 +203,7 @@
 
                 <div class="form-group">
                     <label for="to">Till:</label>
-                    <select class="js-example-basic-single" id="to" name="to">
+                    <select class="js-example-basic-single" id="to" name="toStop">
                     </select>
                 </div>
                 <div class="form-group">

@@ -1,10 +1,14 @@
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+from starlette.responses import JSONResponse, Response
 from starlette.templating import Jinja2Templates
-from fastapi import FastAPI, Request
+
+from fastapi import Cookie, FastAPI, Request, Form
 
 import trafikLab
 from spotifyTest import fillPlaylist
 from spotifyTest import getAccessToken
+import json
 
 app = FastAPI()
 
@@ -15,25 +19,27 @@ templates = Jinja2Templates(directory="templates")
 async def loginSpotify(request: Request):
     code = request.query_params.get("code")
     print(code)
-    accessToken = await getAccessToken(code)
-    request.session["accessToken"] = accessToken
 
-    return templates.TemplateResponse('index.html', context={'request': request})
+    accessToken = await getAccessToken(code)
+
+    response = templates.TemplateResponse('index.html', context={'request': request})
+    response.set_cookie(key="accessToken", value=accessToken, samesite="strict", max_age=8000)
+
+    print(response.headers)
+
+    return response
 
 @app.get("/")
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
+class Search(BaseModel):
+    fromStop : str
+    to: str
+    genre : str
 
-@app.get("/search")
-async def getTrip(request: Request):
-    print(request.query_params)
-    query_params = request.query_params
-
-    fromStop = query_params.get('from')
-    toStop = query_params.get('to')
-    genre = query_params.get('genre')
-
+@app.post("/search")
+async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(), genre: str = Form()):
     print(fromStop, toStop)
     trip = await trafikLab.findTrip(fromStop, toStop)
 
@@ -44,6 +50,8 @@ async def getTrip(request: Request):
 
     print(totalTime)
 
+    accessToken = request.cookies.get("accessToken")
+    #print("RETRIEVED ACCESS TOKEN FROM COOKIES" + access_Token)
 
     return templates.TemplateResponse('index_generated.tpl',
                                       context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})
