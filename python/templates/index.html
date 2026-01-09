@@ -20,12 +20,16 @@
         </script>
     </head>
 <body>
-        <header class="site-header">
-            <h1 class="logo-title">PENDLAREN</h1>
-            <button type="button" onclick="login()">Login to Spotify</button>
-        </header>
+<header class="site-header">
+    <h1 class="logo-title">PENDLAREN</h1>
 
-        <main class="site-main"> 
+    {% if not spotify_logged_in %}
+    <button type="button" onclick="login()">Login to Spotify</button>
+    {% endif %}
+</header>
+
+
+<main class="site-main">
             <div class="main-layout">
                 <section class="form-section">
                     <form action="https://localhost:8000/search" method="POST" class="trip-form">
