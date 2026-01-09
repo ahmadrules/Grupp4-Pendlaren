@@ -53,7 +53,15 @@
                                 <option value="Rap">Rap</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn-search" id="searchBtn">SÖK</button>
+                        <button
+                                type="submit"
+                                class="btn-search"
+                                id="searchBtn"
+                                {% if not spotify_logged_in %}disabled{% endif %}
+                        >
+                            SÖK
+                        </button>
+
                     </form>
                 </section>
 
