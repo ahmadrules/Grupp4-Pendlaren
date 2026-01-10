@@ -134,9 +134,10 @@ def get_transfer_details(trip: Trip):
 
         transfers.append({
             "station": curr_leg.toStop,
-            "arrival": curr_leg.toTime[:5],
-            "departure": next_leg.fromTime[:5],
-            "wait_minutes": wait_minutes
+            "arrival": curr_leg.toTime[:5] if len(curr_leg.toTime) >= 5 else curr_leg.toTime,
+            "departure": next_leg.fromTime[:5] if len(next_leg.fromTime) >= 5 else next_leg.fromTime,
+            "wait_minutes": wait_minutes,
+            "is_final_destination": (i == len(legs) - 2)
         })
 
     return transfers

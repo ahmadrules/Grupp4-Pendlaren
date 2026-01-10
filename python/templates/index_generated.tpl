@@ -249,9 +249,13 @@
                     {% for t in transfers %}
                         </br><li>
                             <strong>{{ t.station }}</strong><br>
-                            Ankomst: {{ t.arrival }}</br>
-                            Avgång: {{ t.departure }}</br>
-                            </br>Bytestid: {{ t.wait_minutes }} minuter</br>
+                                Ankomst: {{ t.arrival }}</br>
+                            {% if not t.is_final_destination %}
+                                Avgång: {{ t.departure }}</br>
+                                </br>Bytestid: {{ t.wait_minutes }} minuter</br>
+                            {% else %}
+                                <em>Slutdestination</em>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
