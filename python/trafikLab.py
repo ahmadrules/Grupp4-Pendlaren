@@ -43,7 +43,6 @@ async def findTrip(stop1, stop2):
                                 + resAPI)
 
         data = json.loads(response.content)
-        #print(data)
         return readTrip(data)
 
 def readTrip(jsonData):
@@ -53,10 +52,15 @@ def readTrip(jsonData):
     for leg in legs:
         fromStation = leg['Origin']['name']
         fromTime = leg['Origin']['time']
+        fromDate = leg['Origin']['date']
         toStation = leg['Destination']['name']
         toTime = leg['Destination']['time']
+        toDate = leg['Destination']['date']
 
-        totalTime = format_timespan(calculateTime(fromTime, toTime))
+        outFrom = fromDate + " " + fromTime
+        outTo = toDate + " " + toTime
+
+        totalTime = format_timespan(calculateTime(outFrom, outTo))
 
         modeOfTravel = readModeOfTravel(leg)
 
@@ -66,9 +70,14 @@ def readTrip(jsonData):
     fromStation = jsonData['Trip'][0]['Origin']['name']
     toStation = jsonData['Trip'][0]['Destination']['name']
     fromTime = jsonData['Trip'][0]['Origin']['time']
+    fromDate = jsonData['Trip'][0]['Origin']['date']
     toTime = jsonData['Trip'][0]['Destination']['time']
+    toDate = jsonData['Trip'][0]['Destination']['date']
 
-    totalSeconds = calculateTime(fromTime, toTime)
+    outFrom = fromDate + " " + fromTime
+    outTo = toDate + " " + toTime
+
+    totalSeconds = calculateTime(outFrom, outTo)
     totalTime = format_timespan(totalSeconds)
 
     trip = Trip(fromStation, fromTime, toStation, toTime, totalTime, totalSeconds, legsOut)
@@ -76,8 +85,9 @@ def readTrip(jsonData):
     return trip
 
 def calculateTime(fromTime, toTime):
-    fDate = datetime.strptime(fromTime, "%H:%M:%S")
-    tDate = datetime.strptime(toTime, "%H:%M:%S")
+    format = "%Y-%m-%d %H:%M:%S"
+    fDate = datetime.strptime(fromTime, format)
+    tDate = datetime.strptime(toTime, format)
     difference = tDate - fDate
     differenceStr = difference.total_seconds()
     return differenceStr

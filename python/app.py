@@ -1,15 +1,12 @@
 import jsonpickle
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from starlette.responses import JSONResponse, Response
 from starlette.templating import Jinja2Templates
 
-from fastapi import Cookie, FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form
 
 import trafikLab
 from spotifyTest import fillPlaylist
 from spotifyTest import getAccessToken
-import json
 
 app = FastAPI()
 
@@ -17,6 +14,7 @@ app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 templates = Jinja2Templates(directory="templates")
 
 from fastapi.responses import RedirectResponse
+
 
 @app.get("/callback")
 async def loginSpotify(request: Request):
@@ -47,28 +45,20 @@ async def index(request: Request):
         }
     )
 
-class Search(BaseModel):
-    fromStop : str
-    to: str
-    genre : str
-
 
 @app.post("/search")
-async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(), genre: str = Form()):
-    print(fromStop, toStop)
-    print(await request.body())
+async def getTrip(request: Request, fromStop: str = Form(), toStop: str = Form(), genre: str = Form(),
+                  contentType: str = Form()):
     trip = await trafikLab.findTrip(fromStop, toStop)
     transfer_details = trafikLab.get_transfer_details(trip)
 
-    totalSeconds = trip.totalSeconds*1000
+    totalSeconds = trip.totalSeconds * 1000
     totalTime = trip.totalTime
-
-    print(totalTime)
 
     access_token = request.cookies.get("accessToken")
     print("RETRIEVED ACCESS TOKEN FROM COOKIES " + access_token)
 
-    playList = await fillPlaylist(genre, totalSeconds, access_token)
+    playList = await fillPlaylist(genre, totalSeconds, access_token, fromStop, toStop)
 
     playlistUrl = playList['url']
     playlistImage = playList['image']
@@ -76,29 +66,13 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
     trip.playlistUrl = playlistUrl
     trip.playlistImage = playlistImage
 
-    print(">>>PLAYLIST URL: " + playList['url'])
-    print(jsonpickle.encode(trip))
-
-    if request.headers.get("Content-Type") == "application/json":
-        return JSONResponse(jsonpickle.encode(trip))
+    if contentType == "application/json":
+        return jsonpickle.encode(trip)
 
     else:
         return templates.TemplateResponse('index_generated.tpl',
-                                      context={'request': request,
-                                               'genre' : genre,
-                                               'fromStop' : fromStop,
-                                               'toStop' : toStop,
-                                               'playListUrl' : playlistUrl,
-                                               'playlistImage' : playlistImage,
-                                               'trip' : trip,
-                                               'transfers' : transfer_details})
-    #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
-
-@app.get("/route_stops")
-async def route_stops(request: Request):
-    query_params = request.query_params
-    fromStop = query_params.get("from")
-    toStop = query_params.get("to")
-
-    stops = await trafikLab.findRouteStops(fromStop, toStop)
-    return JSONResponse({"stops": stops})
+                                          context={'request' : request,
+                                                   'playlistUrl': playlistUrl,
+                                                   'playlistImage': playlistImage,
+                                                   'trip': trip,
+                                                   'transfers': transfer_details})
