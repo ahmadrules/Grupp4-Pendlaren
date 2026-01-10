@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 from itertools import product
 
 from humanfriendly import format_timespan
@@ -91,6 +91,7 @@ def readModeOfTravel(jsonData):
     if product == 'Promenad':
         return ['Promenad', '0']
 
+    # Bussar
     if product.find('Länstrafik - Buss') != -1:
         line = int(product.replace('Länstrafik - Buss ', ''))
 
@@ -99,12 +100,37 @@ def readModeOfTravel(jsonData):
         else:
             return ['Regionbuss', line]
 
+    # Tåg
     if product.find("Regional") != -1:
-        line = int(product.replace('Regional Tåg ', ''))
-        return ['Öresundståg', line]
-    else:
-        line = int(product.replace('Länstrafik - Tåg ', ''))
-        return ['Pågatåg', line]
+        try:
+            line = int(product.replace('Regional Tåg ', ''))
+            return ['Öresundståg', line]
+        except ValueError:
+            line = product.replace('Regional Tåg ', '')
+            return ['Öresundståg', line]
+        
+    if product.find("SJ") != -1 or product.find("Snabbtåg") != -1:
+        if product.find("SJ Snabbtåg") != -1:
+            line = product.replace('SJ Snabbtåg ', '')
+            return ['SJ Snabbtåg', line]
+        
+        elif product.find("SJ Regionaltåg") != -1:
+            line = product.replace('SJ Regionaltåg ', '')
+            return ['SJ Regionaltåg', line]
+        
+        elif product.find("Snabbtåg") != -1:
+            line = product.replace('Snabbtåg ', '')
+            return ['Snabbtåg', line]
+
+    if product.find("Länstrafik - Tåg") != -1:
+        try:
+            line = int(product.replace('Länstrafik - Tåg ', ''))
+            return ['Pågatåg', line]
+        except ValueError:
+            line = product.replace('Länstrafik - Tåg ', '')
+            return ['Pågatåg', line]
+            
+    return [product, '0']
 
 def get_transfer_stops(trip: Trip):
     """
@@ -114,3 +140,30 @@ def get_transfer_stops(trip: Trip):
     if not legs or len(legs) <= 1:
         return []
     return [legs[i].fromStop for i in range(1, len(legs))]
+
+def get_transfer_details(trip: Trip):
+    transfers = []
+    legs = trip.legs
+
+    for i in range(len(legs) - 1):
+        curr_leg = legs[i]
+        next_leg = legs[i + 1]
+
+        arrival_time = datetime.strptime(curr_leg.toTime, "%H:%M:%S").time()
+        departure_time = datetime.strptime(next_leg.fromTime, "%H:%M:%S").time()
+
+        arrival = datetime.combine(date.today(), arrival_time)
+        departure = datetime.combine(date.today(), departure_time)
+
+        wait_minutes = int((departure - arrival).total_seconds() / 60)
+        is_final_destination = (i == len(legs) - 1)
+
+        transfers.append({
+            "station": curr_leg.toStop,
+            "arrival": curr_leg.toTime[:5] if len(curr_leg.toTime) >= 5 else curr_leg.toTime,
+            "departure": next_leg.fromTime[:5] if len(next_leg.fromTime) >= 5 else next_leg.fromTime,
+            "wait_minutes": wait_minutes,
+            "is_final_destination": is_final_destination
+        })
+
+    return transfers
