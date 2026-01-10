@@ -58,7 +58,7 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
     print(fromStop, toStop)
     print(await request.body())
     trip = await trafikLab.findTrip(fromStop, toStop)
-    transfer_stops = trafikLab.get_transfer_stops(trip)
+    transfer_details = trafikLab.get_transfer_details(trip)
 
     totalSeconds = trip.totalSeconds*1000
     totalTime = trip.totalTime
@@ -88,9 +88,10 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
                                                'genre' : genre,
                                                'fromStop' : fromStop,
                                                'toStop' : toStop,
-                                               'transfer_stops' : transfer_stops,
                                                'playListUrl' : playlistUrl,
-                                               'playlistImage' : playlistImage,})
+                                               'playlistImage' : playlistImage,
+                                               'trip' : trip,
+                                               'transfers' : transfer_details})
     #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
 
 @app.get("/route_stops")
