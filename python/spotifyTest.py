@@ -7,8 +7,12 @@ import requests
 file = open("keys/SPOTIFY_SECRET.txt")
 client_secret = file.read()
 client_id = 'e6740bb7feb04f329db3f1cf4ebffefe'
+global access_token
+global userID
+
 
 async def getAccessToken(auth):
+    global access_token
     authCC = client_id + ':' + client_secret
 
     authbytes = authCC.encode("utf-8")
@@ -29,29 +33,27 @@ async def getAccessToken(auth):
         print(r.text)
     else:
         print(">>>FOUND ACCESS TOKEN")
+        access_token = r.json()['access_token']
         return r.json()['access_token']
 
 
 
 async def getUserID():
+    global userID
     url = "https://api.spotify.com/v1/me"
-    file = open("keys/SPOTIFY_ACCESS_TOKEN.txt")
-    access_token =  file.read()
     headers = {'Authorization': 'Bearer ' + access_token}
+
 
     # HÄR HÄMTAS USER_ID
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
-        print(">>>USER ID")
-        with open("keys/SPOTIFY_USER_ID.txt", "w") as f:
-            f.write(r.json()['id'])
+        print(">>>FOUND USER ID")
+        userID = r.json()['id']
         return r.json()['id']
 
 async def searchForTracks(genre):
     q = 'q=remaster%2520genre%3A'+ genre + '&type=track&market=SE&limit=50'
     url = "https://api.spotify.com/v1/search?" + q
-    file = open("keys/SPOTIFY_ACCESS_TOKEN.txt")
-    access_token =  file.read()
 
     headers = {"Authorization" : 'Bearer ' + str(access_token)}
     r = requests.get(url, headers=headers)
@@ -69,39 +71,33 @@ async def searchForTracks(genre):
         print("ERROR LOADING TRACKS")
 
 async def createPlaylist():
-    await getUserID()
-
-    auth = open("keys/SPOTIFY_ACCESS_TOKEN.txt").read()
-    userID = open( "keys/SPOTIFY_USER_ID.txt").read()
-
     url = "https://api.spotify.com/v1/users/" + userID + "/playlists"
-    headers = {'Authorization': 'Bearer ' + auth, 'Content-Type': 'application/json'}
+    headers = {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
     data = {"name" : "Stinas lista", "description" : "Testar API snälla funka"}
 
     p = requests.post(url, headers=headers, json=data)
     if p.status_code == 201:
         print(">>>CREATED PLAYLIST")
         playlistID = p.json()['id']
-        print(playlistID)
 
         return playlistID
     else:
         print("ERROR CREATING PLAYLIST")
 
 async def getLatestCreatedPlaylist():
-    userID = getUserID()
-    auth = open("keys/SPOTIFY_ACCESS_TOKEN.txt").read()
-
     url = "https://api.spotify.com/v1/users/" + userID + "/playlists"
-    headers = {'Authorization': 'Bearer ' + auth, 'Content-Type': 'application/json'}
+    headers = {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
 
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
         print(">>>FOUND PLAYLIST")
         return r.json()['items'][0]
 
-async def fillPlaylist(genre, length):
-    auth = open("keys/SPOTIFY_ACCESS_TOKEN.txt").read()
+async def fillPlaylist(genre, length, accessToken):
+    global access_token
+    access_token = accessToken
+    await getUserID()
+
     playlistID = await createPlaylist()
     tracks = await searchForTracks(genre)
 
@@ -118,7 +114,7 @@ async def fillPlaylist(genre, length):
             break
 
     url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks"
-    headers = {'Authorization': 'Bearer ' + auth, 'Content-Type': 'application/json'}
+    headers = {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
     data = {'uris' : uris}
 
     p = requests.post(url, headers=headers, json=data)

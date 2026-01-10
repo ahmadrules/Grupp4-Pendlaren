@@ -73,7 +73,6 @@ def readTrip(jsonData):
 
     trip = Trip(fromStation, fromTime, toStation, toTime, totalTime, totalSeconds, legsOut)
 
-    print(jsonpickle.encode(trip))
     return trip
 
 def calculateTime(fromTime, toTime):

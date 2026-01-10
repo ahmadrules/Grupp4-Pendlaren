@@ -14,8 +14,9 @@
             function login() {
                 var spotifyLoginWindow = window.open('http://accounts.spotify.com/authorize?client_id=e6740bb7feb04f329db3f1cf4ebffefe&redirect_uri=https://127.0.0.1:8000/callback&response_type=code&scope=playlist-modify-public playlist-modify-private',"_self");
                 // Close event
-
             }
+
+
 
         </script>
     </head>
@@ -32,7 +33,7 @@
 <main class="site-main">
             <div class="main-layout">
                 <section class="form-section">
-                    <form action="https://localhost:8000/search" method="POST" class="trip-form">
+                    <form action="https://127.0.0.1:8000/search" method="POST" class="trip-form">
                         <div class="form-group">
                             <label for="from">Från:</label>
                             <select class="js-example-basic-single" id="from" name="fromStop">

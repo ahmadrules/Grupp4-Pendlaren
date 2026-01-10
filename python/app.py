@@ -1,3 +1,4 @@
+import jsonpickle
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.responses import JSONResponse, Response
@@ -21,7 +22,6 @@ from fastapi.responses import RedirectResponse
 async def loginSpotify(request: Request):
     code = request.query_params.get("code")
 
-    global accessToken
     accessToken = await getAccessToken(code)
 
     response = RedirectResponse(url="/")
@@ -29,9 +29,8 @@ async def loginSpotify(request: Request):
         key="accessToken",
         value=accessToken,
         samesite="lax",
-        max_age=8000
+        max_age=3600
     )
-
     return response
 
 
@@ -57,6 +56,7 @@ class Search(BaseModel):
 @app.post("/search")
 async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(), genre: str = Form()):
     print(fromStop, toStop)
+    print(await request.body())
     trip = await trafikLab.findTrip(fromStop, toStop)
     transfer_stops = trafikLab.get_transfer_stops(trip)
 
@@ -65,11 +65,32 @@ async def getTrip(request: Request, fromStop : str = Form(), toStop: str = Form(
 
     print(totalTime)
 
-    #accessToken = request.cookies.get("accessToken")
-    #print("RETRIEVED ACCESS TOKEN FROM COOKIES" + access_Token)
+    access_token = request.cookies.get("accessToken")
+    print("RETRIEVED ACCESS TOKEN FROM COOKIES " + access_token)
 
-    return templates.TemplateResponse('index_generated.tpl',
-                                      context={'request': request, 'access_token' : accessToken, 'total_seconds' : totalSeconds, 'genre' : genre, 'fromStop' : fromStop, 'toStop' : toStop})
+    playList = await fillPlaylist(genre, totalSeconds, access_token)
+
+    playlistUrl = playList['url']
+    playlistImage = playList['image']
+
+    trip.playlistUrl = playlistUrl
+    trip.playlistImage = playlistImage
+
+    print(">>>PLAYLIST URL: " + playList['url'])
+    print(jsonpickle.encode(trip))
+
+    if request.headers.get("Content-Type") == "application/json":
+        return JSONResponse(jsonpickle.encode(trip))
+
+    else:
+        return templates.TemplateResponse('index_generated.tpl',
+                                      context={'request': request,
+                                               'genre' : genre,
+                                               'fromStop' : fromStop,
+                                               'toStop' : toStop,
+                                               'transfer_stops' : transfer_stops,
+                                               'playListUrl' : playlistUrl,
+                                               'playlistImage' : playlistImage,})
     #return Response(await trafikLab.findTrip(fromStop, toStop), media_type="application/json")
 
 @app.get("/route_stops")

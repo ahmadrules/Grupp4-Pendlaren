@@ -179,8 +179,6 @@
             playBtn.setAttribute("href", imageURL)
         }
 
-        getUserID();
-
 
         </script>
 </head>
@@ -193,7 +191,7 @@
 <main class="site-main">
     <div class="main-layout">
         <section class="form-section">
-            <form action="https://localhost:8000/search" method="POST" class="trip-form">
+            <form action="https://127.0.0.1:8000/search" method="POST" class="trip-form">
                 <div class="form-group">
                     <label for="from">Från:</label>
                     <select class="js-example-basic-single" id="from" name="from">
@@ -220,11 +218,10 @@
 
         <section class="playlist-section">
             <div class="playlist-box">
-                <img alt="Din spellista visas här" id="playlistImage">
+                <img src="{{playlistImage}}" alt="Din spellista visas här" id="playlistImage">
             </div>
 
-            <!-- Tillfällig länk -->
-            <a class="btn-play-now" id="playBtn">
+            <a href="{{playlistUrl}}" class="btn-play-now" id="playBtn">
                 SPELA NU
             </a>
         </section>
@@ -247,8 +244,4 @@
     </div>
 </main>
 </body>
-
-<script>
-
-</script>
 </html>
