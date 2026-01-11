@@ -253,12 +253,16 @@
                             {% if not t.is_final_destination %}
                                 Avgång: {{ t.departure }}</br>
                                 </br>Bytestid: {{ t.wait_minutes }} minuter</br>
+
                             {% else %}
-                                <em>Slutdestination</em>
+                                <em>Slutdestination </em>
                             {% endif %}
                         </li>
                     {% endfor %}
                 </ul>
+                <div> 
+                    </br><p> Du är framme vid {{ trip.toStop }} kl {{ trip.toTime[:5] }}.
+                </div>
             {% else %}
                 <p>Inga byten på denna resa.</p>
             {% endif %}

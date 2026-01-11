@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from itertools import product
 
 from humanfriendly import format_timespan
@@ -142,6 +142,16 @@ def get_transfer_stops(trip: Trip):
         return []
     return [legs[i].fromStop for i in range(1, len(legs))]
 
+def calculate_wait_time(leg1, leg2):
+    """Beräkna väntetid mellan 2 legs"""
+    arrival = datetime.strptime(leg1.toTime, "%H:%M:%S")
+    departure = datetime.strptime(leg2.fromTime, "%H:%M:%S")
+
+    if departure < arrival:
+        departure = departure + timedelta(days=1)
+
+    return int((departure - arrival).total_seconds() / 60)
+
 def get_transfer_details(trip: Trip):
     transfers = []
     legs = trip.legs
@@ -150,20 +160,14 @@ def get_transfer_details(trip: Trip):
         curr_leg = legs[i]
         next_leg = legs[i + 1]
 
-        arrival_time = datetime.strptime(curr_leg.toTime, "%H:%M:%S").time()
-        departure_time = datetime.strptime(next_leg.fromTime, "%H:%M:%S").time()
-
-        arrival = datetime.combine(date.today(), arrival_time)
-        departure = datetime.combine(date.today(), departure_time)
-
-        wait_minutes = int((departure - arrival).total_seconds() / 60)
-        is_final_destination = (i == len(legs) - 1)
+        wait = calculate_wait_time(curr_leg, next_leg)
+        is_final_destination = (curr_leg.toStop == trip.toStop)
 
         transfers.append({
             "station": curr_leg.toStop,
-            "arrival": curr_leg.toTime[:5] if len(curr_leg.toTime) >= 5 else curr_leg.toTime,
-            "departure": next_leg.fromTime[:5] if len(next_leg.fromTime) >= 5 else next_leg.fromTime,
-            "wait_minutes": wait_minutes,
+            "arrival": curr_leg.toTime[:5],
+            "departure": next_leg.fromTime[:5] if not is_final_destination else None,
+            "wait_minutes": wait,
             "is_final_destination": is_final_destination
         })
 
