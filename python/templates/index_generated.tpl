@@ -20,8 +20,14 @@
 </head>
 <body>
 <header class="site-header">
-    <h1 class="logo-title">PENDLAREN</h1>
-
+    <h1 class="logo-title"><u>PENDLAREN</u></h1>
+        <div style="margin-top: 0px;">
+            {% if not spotify_logged_in %}
+            <button onclick="login()">Logga in</button>
+            {% else %}
+            <button onclick="window.location.href='/logout'" class="btn-login">Logga ut</button>
+            {% endif %}
+        </div>
 </header>
 
 <main class="site-main">
@@ -100,10 +106,13 @@
 </main>
 <footer class="site-footer">
     <div class="footer-inner">
-        <p>
-            Spotify
-        </p>
-        <img src="/static/images/spotify_logo.png" alt="Spotifys logga" class="footer-logo">
+                <a href="https://www.trafiklab.se/" class="trafiklab-link">
+                    <img src="/static/images/script.png" alt="Trafiklabs logga" style="width:105px;height:50px;">
+                </a>
+
+                <a href="https://open.spotify.com/">
+                    <img src="/static/images/spotify_logo.png" alt="Spotifys logga" style="width:40px;height:40px;">
+                </a>
     </div>
 </footer>
 </body>
