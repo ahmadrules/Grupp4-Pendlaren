@@ -8,7 +8,7 @@
 /* Färgerna justeras här via root */
 :root {
     --bg-main: #083409; /* Mörkgrön */
-    --bg-light: #B5B5B5; /* Ljusgrå */
+    --bg-light: #ffffff; /* Vit */
     --text-muted: #535353; /* Mörkgrå */
     --accent: #1ED760; /* Spotify-grön */
 
@@ -42,6 +42,7 @@ body {
     color: var(--accent);
     font-weight: 700;
     cursor: pointer;
+    margin-top: 20px;
 }
 
 .site-header button:hover {
@@ -202,9 +203,11 @@ body {
 /* Footer */
 
 .site-footer {
-    background-color: var(--bg-light);
+    margin-top: 5rem;
+    margin-left: -38px;
+    background-color: rgba(255, 255, 255, 0.2);
     color: var(--text-on-light);
-    padding: 1rem 3rem 2rem;
+    padding: 1rem 5rem 1rem;
     border-top: 2px solid var(--bg-main);
     font-size: 0.95rem;
 }
@@ -236,4 +239,9 @@ body {
 
 .select2-dropdown {
     background-color: #ffffff;
+}
+
+.trafiklab-link {
+    margin-left: -20px;
+    margin-right: 10px;
 }

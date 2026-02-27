@@ -31,6 +31,12 @@ async def loginSpotify(request: Request):
     )
     return response
 
+@app.get("/logout")
+async def logout():
+    response = RedirectResponse(url="/")
+    response.delete_cookie(key="accessToken")
+    return response
+
 
 @app.get("/")
 async def index(request: Request):
@@ -70,9 +76,11 @@ async def getTrip(request: Request, fromStop: str = Form(), toStop: str = Form()
         return jsonpickle.encode(trip)
 
     else:
+        spotify_logged_in = access_token is not None
         return templates.TemplateResponse('index_generated.tpl',
                                           context={'request' : request,
                                                    'playlistUrl': playlistUrl,
                                                    'playlistImage': playlistImage,
                                                    'trip': trip,
-                                                   'transfers': transfer_details})
+                                                   'transfers': transfer_details,
+                                                   'spotify_logged_in': spotify_logged_in})
