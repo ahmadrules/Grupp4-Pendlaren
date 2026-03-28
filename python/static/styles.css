@@ -245,3 +245,18 @@ body {
     margin-left: -20px;
     margin-top: 10px;
 }
+
+/* Dela-knapp */
+.btn-share {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: 0.75rem;
+    background-color: transparent;
+    border: 2px solid #1ED760;
+    color: #1ED760;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}

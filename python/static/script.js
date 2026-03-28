@@ -64,3 +64,8 @@ function getCookie() {
     document.getElementById("login").innerHTML = document.cookie;
     return document.cookie;
 }
+
+function shareTrip(playlistUrl) {
+    navigator.clipboard.writeText(playlistUrl);
+    alert('Spotify-länk kopierad!');
+}

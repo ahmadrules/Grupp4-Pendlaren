@@ -62,12 +62,26 @@
 
         <section class="playlist-section">
             <div class="playlist-box">
-                <img src="{{playlistImage}}" alt="Din spellista visas här" id="playlistImage">
+                {% if playlistImage %}
+                <img src="{{playlistImage}}" alt="Din spellista visas här" id="playlistImage" style="width:100%; height:100%; object-fit:cover; border-radius:0.75rem;">
+                {% else %}
+                <div class="playlist-placeholder">
+                    Din tidsanpassade spellista visas här.
+                </div>
+                {% endif %}
             </div>
 
-            <a href="{{playlistUrl}}" class="btn-play-now" id="playBtn">
-                SPELA NU
-            </a>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{playlistUrl}}" class="btn-play-now" id="playBtn" target="_blank">
+                    SPELA NU
+                </a>
+
+                {% if playlistUrl %}
+                <button onclick="shareTrip('{{playlistUrl}}')" class="btn-share" id="shareBtn">
+                     DELA RESA
+                </button>
+                {% endif %}
+            </div>
         </section>
 
         <aside class="playlist-aside" aria-label="Byten längs rutten">
