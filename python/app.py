@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
 from fastapi import FastAPI, Request, Form
+from datetime import datetime
 
 import trafikLab
 from spotifyTest import fillPlaylist
@@ -50,6 +51,19 @@ async def index(request: Request):
             "spotify_logged_in": spotify_logged_in
         }
     )
+
+@app.get("/current-time")
+async def get_current_time():
+    now = datetime.now()
+    return {
+        "time": now.strftime("%H:%M"),
+        "date": now.strftime("%m-%d"),
+        "weekday": now.strftime("%A"),
+        "full": now.strftime("%H:%M - %m-%d")
+    }
+
+
+
 
 
 @app.post("/search")

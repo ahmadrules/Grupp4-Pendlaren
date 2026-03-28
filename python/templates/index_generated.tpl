@@ -19,6 +19,7 @@
     </script>
 </head>
 <body>
+{% include "clock.html" %}
 <header class="site-header">
     <h1 class="logo-title"><u>PENDLAREN</u></h1>
         <div style="margin-top: 0px;">
