@@ -74,17 +74,18 @@
             const weekday = weekdays[now.getDay()];
             const day = now.getDate();
             const month = months[now.getMonth()];
+            const year = now.getFullYear();
 
 
             const clockElement = document.getElementById('pendlarLiveClock');
             const dateElement = document.getElementById('pendlarLiveDate');
 
             if (clockElement) {
-                clockElement.textContent = `${hours}:${minutes}`;
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
             }
 
             if (dateElement) {
-                dateElement.textContent = `${weekday} ${day} ${month}`;
+                dateElement.textContent = `${weekday} ${day} ${month} ${year}`;
             }
         }
 

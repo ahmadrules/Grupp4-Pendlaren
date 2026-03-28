@@ -56,10 +56,10 @@ async def index(request: Request):
 async def get_current_time():
     now = datetime.now()
     return {
-        "time": now.strftime("%H:%M"),
-        "date": now.strftime("%m-%d"),
+        "time": now.strftime("%H:%M:%S"),
+        "date": now.strftime("%Y-%m-%d"),
         "weekday": now.strftime("%A"),
-        "full": now.strftime("%H:%M - %m-%d")
+        "full": now.strftime("%H:%M:%S - %Y-%m-%d")
     }
 
 
