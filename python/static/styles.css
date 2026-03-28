@@ -149,7 +149,7 @@ body {
 }
 
 .btn-play-now {
-    display: block;
+    display: inline-block;
     padding: 0.9rem 2.5rem;
     border-radius: 0.75rem;
     background-color: transparent;
@@ -159,10 +159,14 @@ body {
     font-weight: 700;
     text-align: center;
     text-decoration: none;
+    transition: all 0.3s ease;
 }
 
 .btn-play-now:hover {
-    filter: brightness(1.1);
+    background-color: white;
+    color: #1ED760;
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
 }
 
 /* Aside: sparade spellistor (höger) */
@@ -259,4 +263,11 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+.btn-share:hover {
+    background-color: #1ED760;
+    color: white;
+    transform: translateY(1px);
+    box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
 }
