@@ -271,3 +271,26 @@ body {
     transform: translateY(1px);
     box-shadow: 0 5px 15px rgba(30, 215, 96, 0.3);
 }
+
+.trip-box {
+    background-color: var(--surface);
+    color: var(--text-on-light);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.trip-box ul {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.trip-box li {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.trip-box li:last-child {
+    border-bottom: none;
+}

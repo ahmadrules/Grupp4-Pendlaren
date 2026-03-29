@@ -97,21 +97,25 @@
 
                 <h3></br>Byten längs rutten</h3>
                 {% if transfers and transfers | length > 0 %}
-                <ul>
-                    {% for t in transfers %}
-                    </br>
-                    <li>
-                        <strong>{{ t.station }}</strong><br>
-                        Ankomst: {{ t.arrival }}</br>
-                        {% if not t.is_final_destination %}
-                        Avgång: {{ t.departure }}</br>
-                        </br>Bytestid: {{ t.wait_minutes }} minuter</br>
-                        {% else %}
-                        <em>Slutdestination</em>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
+
+                <div class="trip-box">
+                    <ul>
+                        {% for t in transfers %}
+                        <li>
+                            <strong>{{ t.station }}</strong><br>
+                            Ankomst: {{ t.arrival }}<br>
+
+                            {% if not t.is_final_destination %}
+                            Avgång: {{ t.departure }}<br>
+                            <br>Bytestid: {{ t.wait_minutes }} minuter<br>
+                            {% else %}
+                            <em>Slutdestination</em>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                 {% else %}
                 <p>Inga byten på denna resa.</p>
                 {% endif %}
