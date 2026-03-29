@@ -172,21 +172,28 @@ body {
 /* Aside: sparade spellistor (höger) */
 
 .playlist-aside {
-    background-color: var(--bg-light);
+    background: linear-gradient(135deg, #ffffff, #f4f4f4);
     color: var(--text-on-light);
-    padding: 1.5rem 1.5rem 2rem;
-    text-align: left;
-    align-self: stretch;
-    height: 100%;
-    border-radius: 0.75rem;
+    padding: 2rem;
+    border-radius: 1rem;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.playlist-aside:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
 }
 
 .aside-title {
     text-align: center;
-    font-size: 1.8rem;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    color: var(--text-on-light);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
 }
 
 .playlist-list {
